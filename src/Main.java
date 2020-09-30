@@ -5,8 +5,6 @@ public class Main {
         boolean running= true;
         while(running)
         running = Bank.welcomeMenu();
-
-
     }
 
 }
