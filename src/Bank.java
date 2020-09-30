@@ -155,7 +155,7 @@ public class Bank {
                 System.out.print(question);
                 return Double.parseDouble(in.nextLine().replace(',', '.'));
             } catch (NumberFormatException e) {
-                System.out.println("Ogiltigt värde! ");
+                System.out.println("Ogiltigt värde!");
             }
         }
     }
