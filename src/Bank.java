@@ -113,7 +113,7 @@ public class Bank {
         Loan loan = new Loan(loanAmount, customer, employee, interest);
         
         customer.addLoan(loan);
-        System.out.println("Lån på " + customer.getLoan().getDebt() + " skapat till " + customer.getName());
+        System.out.println("Lån på " + customer.getLatestLoan().getDebt() + " skapat till " + customer.getName());
     }
     
     public static boolean exitMenu() {
