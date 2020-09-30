@@ -1,7 +1,7 @@
 public class Main {
     public static void main(String[] args) {
         Bank.createCustomer();
-        Bank.testCode();
+        Bank.createTestUsers();
         boolean running= true;
         while(running)
         running = Bank.welcomeMenu();
