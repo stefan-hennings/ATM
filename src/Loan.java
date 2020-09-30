@@ -3,31 +3,44 @@ import java.util.List;
 import java.util.UUID;
 
 public class Loan {
-    private UUID loanNumber;
-//    private double interestRate = 3;
+    private int loanID;
+    private double interestRate;
     private double debt;
-    Customer customer;
-//    private Employee manager;
+    private Customer customer;
+    private Employee manager;
     private List<LoanStatus> loanHistory = new ArrayList<>();
-    
+
     public Loan(double debt, Customer customer, Employee manager, double interestRate) {
         this.debt = debt;
         this.customer = customer;
+        this.interestRate = interestRate;
+        this.manager = manager;
         loanHistory.add(new LoanStatus(manager, interestRate));
-        loanNumber = UUID.randomUUID();
-    
     }
-    
+
+    public Loan(double debt, Customer customer, Employee manager, double interestRate, int loanID) {
+        this.debt = debt;
+        this.customer = customer;
+        this.interestRate = interestRate;
+        this.manager = manager;
+        this.loanID = loanID;
+        loanHistory.add(new LoanStatus(manager, interestRate));
+    }
+
+    public int getLoanID() {
+        return loanID;
+    }
+
+    public void setLoanID(int loanID) {
+        this.loanID = loanID;
+    }
+
     public Loan(double debt) {
         this.debt = debt;
     }
     
     public void pay(double amountPaid) {
         debt -= amountPaid;
-    }
-    
-    public UUID getLoanNumber() {
-        return loanNumber;
     }
     
     public double getInterestRate() {
@@ -45,4 +58,9 @@ public class Loan {
     public void updateInterestRate(double interestRate, Employee manager) {
         loanHistory.add(new LoanStatus(manager, interestRate));
     }
+
+    public List<LoanStatus> getLoanHistory() {
+        return loanHistory;
+    }
+
 }

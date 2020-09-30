@@ -6,7 +6,7 @@ public class Account {
     private double interestRate = 0.03;
     Customer customer;
     
-    public Account(double accountBalance, double interestRate, Customer customer) {
+    public Account(double accountBalance, Customer customer) {
         this.accountBalance = accountBalance;
         this.interestRate = interestRate;
         accountNumber = UUID.randomUUID();
@@ -19,5 +19,8 @@ public class Account {
         } else {
             throw new IllegalArgumentException("Ansök om lån!");
         }
+    }
+    public void changeInterestRate(double newInterest){
+        interestRate = newInterest;
     }
 }

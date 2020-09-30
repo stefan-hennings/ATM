@@ -3,6 +3,7 @@ public class Main {
         Bank.testCode();
         Bank.welcomeMenu();
 
+        //TODO: Fixa till din skit och variable namn!
 
     }
 
