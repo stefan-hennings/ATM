@@ -12,7 +12,7 @@ public class Bank {
 
     public static boolean welcomeMenu(){
         String input;
-        System.out.println("\nVälj vad du vill göra:\n\n" +
+        System.out.println("Välj vad du vill göra:\n" +
                 "1. Lägg till ny kund\n" +
                 "2. Anställ någon\n" +
                 "3. Öppna konto\n" +
@@ -55,20 +55,11 @@ public class Bank {
 
     }
 
-    public static void createCustomer(){ //TODO: Felhantering, inga duplicates.
+    public static void createCustomer() { //TODO: Felhantering, inga duplicates.
 
-        String name = null;
-        String personalNumber = null;
+        String name = getString("Mata in kundens namn: ");
 
-        while(name==null){
-            System.out.print("Mata in kundens namn: ");
-            name = in.nextLine();
-        }
-
-        while (personalNumber == null) {
-            System.out.print("Mata in kundens personnummer: ");
-            personalNumber = in.nextLine();
-        }
+        String personalNumber = getString("Mata in kundens personnummer: ");
         customerList.add(new Customer(name, personalNumber));
 
     }
@@ -112,10 +103,10 @@ public class Bank {
 
         Customer c = getCustomer(customerName, customerPersonalNumber);
         Employee e = getEmployee(employeePersonalNumber);
-        Loan loan = new Loan(loanAmount, c, e, interest);
+        Loan loan = new Loan(loanAmount, c, e, interest );
         assert c != null;
         c.addLoan(loan);
-        System.out.println("Lån på " + c.getLoan().getDebt() + " skapat till " + c.getName());
+        System.out.println("Lån på " + c.getLoan().getDebt() +" skapat till " + c.getName());
     }
 
     public static boolean exitMenu(){
