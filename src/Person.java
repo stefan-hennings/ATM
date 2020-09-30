@@ -2,8 +2,8 @@ import java.util.UUID;
 
 public class Person {
     private String name;
-    private String personalId;
-    private UUID customerId;
+    private final String personalId;
+    private final UUID customerId;
     
     public Person(String name, String personalId) {
         this.name = name;
