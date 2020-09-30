@@ -49,9 +49,10 @@ public class Bank {
     }
     
     public static void createCustomer() { //TODO: Felhantering, inga duplicates.
+        Customer customer;
         String name = getString("Mata in kundens namn: ");
-        
         String personalNumber = getString("Mata in kundens personnummer: ");
+        
         customerList.add(new Customer(name, personalNumber));
         
     }
@@ -106,23 +107,22 @@ public class Bank {
     }
     
     public static Customer findCustomer() {
-        Customer customer = null;
-        while (customer == null) {
-            customer = getCustomer(getString("Ange ditt personnummer: "));
-            if (customer == null) {
-                System.out.println("Ogiltigt personnummer! ");
+        while (true) {
+            try {
+                return getCustomer(getString("Ange ditt personnummer: "));
+            } catch (CustomerNotFoundException e) {
+                System.out.println(e.getMessage());
             }
         }
-        return customer;
     }
     
-    public static Customer getCustomer(String name) {
+    public static Customer getCustomer(String personalNumber) {
         for (Customer customer : customerList) {
-            if (customer.getName().equalsIgnoreCase(name.trim())) {
+            if (customer.getPersonalId().equalsIgnoreCase(personalNumber)) {
                 return customer;
             }
         }
-        return null;
+        throw new CustomerNotFoundException("Det finns ingen kund med det personnummret. ");
     }
     
     public static Employee findEmployee() {
