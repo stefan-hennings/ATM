@@ -29,30 +29,23 @@ public class Bank {
             case "2" -> {
                 createEmployee();
                 return true;
-
             }
-
             case "3" -> {
                 createAccount();
                 return true;
-
             }
             case "4" -> {
                 createLoan();
                 return true;
-
             }
-
             case "5"-> {
                 return !exitMenu();
             }
-
             default -> {
                 System.out.println("Ange ett giltigt val! (1-5)");
                 return true;
             }
         }
-
     }
 
     public static void createCustomer(){ //TODO: Felhantering, inga duplicates.
@@ -146,7 +139,6 @@ public class Bank {
         }
         return null;
     }
-
 
     private static String getString(String question) {
         String response = null;
