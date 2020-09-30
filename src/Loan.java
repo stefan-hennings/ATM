@@ -1,19 +1,19 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class Loan {
     private UUID loanNumber;
-    private double interestRate = 3;
+//    private double interestRate = 3;
     private double debt;
     Customer customer;
-    private Employee manager;
-    private List<Double> interestHistory;
+//    private Employee manager;
+    private List<LoanStatus> loanHistory = new ArrayList<>();
     
     public Loan(double debt, Customer customer, Employee manager, double interestRate) {
         this.debt = debt;
         this.customer = customer;
-        this.manager = manager;
-        this.interestRate = interestRate;
+        loanHistory.add(new LoanStatus(manager, interestRate));
         loanNumber = UUID.randomUUID();
     
     }
@@ -31,7 +31,7 @@ public class Loan {
     }
     
     public double getInterestRate() {
-        return interestRate;
+        return loanHistory.get(loanHistory.size()-1).getInterestRate();
     }
     
     public double getDebt() {
@@ -39,14 +39,15 @@ public class Loan {
     }
     
     public Employee getManager() {
-        return manager;
+        return loanHistory.get(loanHistory.size()-1).getManager();
     }
     
-    public void setInterestRate(double interestRate) {
-        this.interestRate = interestRate;
+    public void updateInterestRate(double interestRate, Employee manager) {
+        loanHistory.add(new LoanStatus(manager, interestRate));
     }
     
     public void changeManager(Employee manager) {
+        
         this.manager = manager;
     }
 }
