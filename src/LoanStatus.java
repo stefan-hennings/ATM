@@ -3,7 +3,6 @@ import java.time.*;
 public class LoanStatus {
     private final Employee manager;
     private final double interestRate;
-    private Customer customer;
     protected LocalDate startDate;
 
     public LoanStatus(Employee manager) {
