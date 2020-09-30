@@ -23,19 +23,23 @@ public class Bank {
 
         switch (input){
             case "1" -> {
-                 return createCustomer();
+                createCustomer();
+                return true;
             }
             case "2" -> {
-                return createEmployee();
+                createEmployee();
+                return true;
 
             }
 
             case "3" -> {
-                return createAccount();
+                createAccount();
+                return true;
 
             }
             case "4" -> {
-               return createLoan();
+                createLoan();
+                return true;
 
             }
 
@@ -51,14 +55,14 @@ public class Bank {
 
     }
 
-    public static boolean createCustomer(){ //TODO: Felhantering, inga duplicates.
+    public static void createCustomer(){ //TODO: Felhantering, inga duplicates.
 
         String name = null;
         String personalNumber = null;
 
         while(name==null){
-        System.out.print("Mata in kundens namn: ");
-        name = in.nextLine();
+            System.out.print("Mata in kundens namn: ");
+            name = in.nextLine();
         }
 
         while (personalNumber == null) {
@@ -66,7 +70,6 @@ public class Bank {
             personalNumber = in.nextLine();
         }
         customerList.add(new Customer(name, personalNumber));
-        return true;
 
     }
 
@@ -77,97 +80,42 @@ public class Bank {
         employeeList.add(new Employee("Julia", "x", 25000));
 
     }
-    public static boolean createEmployee(){
-        String name = null;
-        String personalNumber = null;
-        String salaryString = null;
-        double salary;
+    public static void createEmployee(){
 
-        while(name==null){
-            System.out.print("Mata in den anställdas namn: ");
-            name = in.nextLine();
-        }
-
-        while (personalNumber == null) {
-            System.out.print("Mata in den anställdas personnummer: ");
-            personalNumber = in.nextLine();
-        }
-
-        while (salaryString == null || !tryParse(salaryString)) {
-            System.out.print("Mata in den anställdas lön: ");
-            salaryString = in.nextLine();
-            salaryString = salaryString.replace(',', '.');
-        }
-        salary = Double.parseDouble(salaryString);
+        String name = getString("Mata in den anställdas namn: ");
+        String personalNumber = getString("Mata in den anställdas personnummer: ");
+        double salary = getDouble("Mata in den anställdas lön: ");
 
         employeeList.add(new Employee(name, personalNumber, salary));
-        return true;
 
     }
-    public static boolean createAccount(){
-        String  customerPersonalNumber=null;
-        String customerName=null;
-        String insertAmountString=null;
-        double insertAmount;
+    public static void createAccount(){
 
-        while(customerName==null) {
-            System.out.print("Ange kundens namn: ");
-            customerName = in.nextLine();
-        }
-        while (customerPersonalNumber==null) {
-            System.out.print("Ange kundens personnummer: ");
-            customerPersonalNumber = in.nextLine();
-        }
-        while (insertAmountString==null || !tryParse(insertAmountString)) {
-            System.out.print("Ange belopp att sätta in: ");
-            insertAmountString = in.nextLine();
-        }
-        insertAmount = Double.parseDouble(insertAmountString);
+
+        String customerName = getString("Ange kundens namn: ");
+        String customerPersonalNumber = getString("Ange kundens personnummer: ");
+
+        double insertAmount = getDouble("Ange belopp att sätta in: ");
+
         Customer c = getCustomer(customerName, customerPersonalNumber);
-
         c.addAccount(new Account(insertAmount, c));
-        return true;
+
     }
 
-    public static boolean createLoan(){
+    public static void createLoan() {
+        String employeePersonalNumber = getString("Ange ditt personnummer: ");
+        String customerName = getString("Ange kundens namn: ");
+        String customerPersonalNumber = getString("Ange kundens personnummer: ");
 
-        String  customerPersonalNumber=null;
-        String customerName=null;
-        String employeePersonalNumber=null;
-        String interestString=null;
-        String loanAmountString=null;
-        double interest;
-        double loanAmount;
+        double loanAmount = getDouble("Ange lånets storlek: ");
+        double interest = getDouble("Ange lånets räntesats: ");
 
-        while (employeePersonalNumber==null) {
-            System.out.print("Ange ditt personnummer: ");
-            employeePersonalNumber = in.nextLine();
-        }
-        while(customerName==null) {
-            System.out.print("Ange kundens namn: ");
-            customerName = in.nextLine();
-        }
-        while (customerPersonalNumber==null) {
-            System.out.print("Ange kundens personnummer: ");
-            customerPersonalNumber = in.nextLine();
-        }
-        while (loanAmountString==null || !tryParse(loanAmountString)) {
-            System.out.print("Ange lånets storlek: ");
-            loanAmountString = in.nextLine();
-        }
-        loanAmount= Double.parseDouble(loanAmountString);
-        while (interestString==null || !tryParse(interestString)) {
-            System.out.print("Ange lånets räntesats: ");
-            interestString = in.nextLine();
-        }
-        interest = Double.parseDouble(interestString);
         Customer c = getCustomer(customerName, customerPersonalNumber);
         Employee e = getEmployee(employeePersonalNumber);
-        Loan loan = new Loan(loanAmount, c, e, interest );
+        Loan loan = new Loan(loanAmount, c, e, interest);
         assert c != null;
         c.addLoan(loan);
-        System.out.println("\nLån på " + c.getLoan().getDebt() +" skapat till " + c.getName());
-        return true;
+        System.out.println("Lån på " + c.getLoan().getDebt() + " skapat till " + c.getName());
     }
 
     public static boolean exitMenu(){
@@ -199,14 +147,24 @@ public class Bank {
         return null;
     }
 
-    public static boolean tryParse(String input){
-        try{
-            double parsed = Double.parseDouble(input);
-            return true;
-        } catch (Exception e){
-            System.out.println("\nLönen måste bestå av siffror!!!");
-            return false;
+
+    private static String getString(String question) {
+        String response = null;
+        while (response == null || response.isEmpty()) {
+            System.out.print(question);
+            response = in.nextLine();
         }
+        return response;
     }
 
+    private static Double getDouble(String question) {
+        while (true) {
+            try {
+                System.out.print(question);
+                return Double.parseDouble(in.nextLine().replace(',', '.'));
+            } catch (NumberFormatException e) {
+                System.out.println("Ogiltigt värde! ");
+            }
+        }
+    }
 }
