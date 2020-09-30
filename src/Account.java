@@ -3,12 +3,11 @@ import java.util.UUID;
 public class Account {
     private UUID accountNumber;
     private double accountBalance;
-    private double interestRate = 0.03;
+    private double interestRate = 0;
     Customer customer;
     
-    public Account(double accountBalance, double interestRate, Customer customer) {
+    public Account(double accountBalance, Customer customer) {
         this.accountBalance = accountBalance;
-        this.interestRate = interestRate;
         accountNumber = UUID.randomUUID();
         this.customer = customer;
     }
@@ -19,5 +18,8 @@ public class Account {
         } else {
             throw new IllegalArgumentException("Ansök om lån!");
         }
+    }
+    public void changeInterestRate(double newInterest){
+        interestRate = newInterest;
     }
 }

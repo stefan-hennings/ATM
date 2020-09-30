@@ -10,9 +10,9 @@ public class Bank {
     private static List<Employee> employeeList = new LinkedList<>();
 
 
-    public static void welcomeMenu(){
+    public static boolean welcomeMenu(){
         String input;
-        System.out.println("Välj vad du vill göra:\n" +
+        System.out.println("\nVälj vad du vill göra:\n\n" +
                 "1. Lägg till ny kund\n" +
                 "2. Anställ någon\n" +
                 "3. Öppna konto\n" +
@@ -22,21 +22,36 @@ public class Bank {
         input = in.nextLine();
 
         switch (input){
-            case "1"->
-                createCustomer();
-            case "2"->
-                createEmployee();
+            case "1" -> {
+                 return createCustomer();
+            }
+            case "2" -> {
+                return createEmployee();
 
-            case "3"-> createLoan();
+            }
 
-//            case "4":
-//                break;
-//            case "5":
+            case "3" -> {
+                return createAccount();
+
+            }
+            case "4" -> {
+               return createLoan();
+
+            }
+
+            case "5"-> {
+                return !exitMenu();
+            }
+
+            default -> {
+                System.out.println("Ange ett giltigt val! (1-5)");
+                return true;
+            }
         }
 
     }
 
-    public static void createCustomer(){ //TODO: Felhantering, inga duplicates.
+    public static boolean createCustomer(){ //TODO: Felhantering, inga duplicates.
 
         String name = null;
         String personalNumber = null;
@@ -51,6 +66,7 @@ public class Bank {
             personalNumber = in.nextLine();
         }
         customerList.add(new Customer(name, personalNumber));
+        return true;
 
     }
 
@@ -61,7 +77,7 @@ public class Bank {
         employeeList.add(new Employee("Julia", "x", 25000));
 
     }
-    public static void createEmployee(){
+    public static boolean createEmployee(){
         String name = null;
         String personalNumber = null;
         String salaryString = null;
@@ -85,10 +101,35 @@ public class Bank {
         salary = Double.parseDouble(salaryString);
 
         employeeList.add(new Employee(name, personalNumber, salary));
+        return true;
 
     }
+    public static boolean createAccount(){
+        String  customerPersonalNumber=null;
+        String customerName=null;
+        String insertAmountString=null;
+        double insertAmount;
 
-    public static void createLoan(){
+        while(customerName==null) {
+            System.out.print("Ange kundens namn: ");
+            customerName = in.nextLine();
+        }
+        while (customerPersonalNumber==null) {
+            System.out.print("Ange kundens personnummer: ");
+            customerPersonalNumber = in.nextLine();
+        }
+        while (insertAmountString==null || !tryParse(insertAmountString)) {
+            System.out.print("Ange belopp att sätta in: ");
+            insertAmountString = in.nextLine();
+        }
+        insertAmount = Double.parseDouble(insertAmountString);
+        Customer c = getCustomer(customerName, customerPersonalNumber);
+
+        c.addAccount(new Account(insertAmount, c));
+        return true;
+    }
+
+    public static boolean createLoan(){
 
         String  customerPersonalNumber=null;
         String customerName=null;
@@ -125,7 +166,20 @@ public class Bank {
         Loan loan = new Loan(loanAmount, c, e, interest );
         assert c != null;
         c.addLoan(loan);
-        System.out.println("Lån på " + c.getLoan().getDebt() +" skapat till " + c.getName());
+        System.out.println("\nLån på " + c.getLoan().getDebt() +" skapat till " + c.getName());
+        return true;
+    }
+
+    public static boolean exitMenu(){
+        System.out.print("Är du säker på att du vill avsluta? (j/n)  ");
+        String input = in.nextLine();
+        if(input.equalsIgnoreCase("j")){
+            System.out.println("Tack för besöket! Välkommen åter!");
+            return true;
+        } else {
+            System.out.println("Stanna så länge du vill!\n");
+            return false;
+        }
     }
 
     public static Customer getCustomer(String name, String personalNumber){
@@ -150,7 +204,7 @@ public class Bank {
             double parsed = Double.parseDouble(input);
             return true;
         } catch (Exception e){
-            System.out.println("Lönen måste bestå av siffror!!!");
+            System.out.println("\nLönen måste bestå av siffror!!!");
             return false;
         }
     }
