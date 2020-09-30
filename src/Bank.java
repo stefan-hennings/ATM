@@ -76,14 +76,30 @@ public class Bank {
     }
     
     public static void createAccount() {
-        Customer customer = getCustomer(getString("Ange kundens personnummer: "));
+        Customer customer;
+        while (true) {
+            try {
+                customer = getCustomer(getString("Ange kundens personnummer: "));
+                break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
         double insertAmount = getDouble("Ange belopp att sätta in: ");
         customer.addAccount(new Account(insertAmount, customer));
     }
     
     public static void createLoan() {
         Employee employee = getEmployee(getString("Ange ditt personnummer: "));
-        Customer customer = getCustomer(getString("Ange kundens personnummer: "));
+        Customer customer;
+        while (true) {
+            try {
+                customer = getCustomer(getString("Ange kundens personnummer: "));
+                break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
         
         double loanAmount = getDouble("Ange lånets storlek: ");
         double interest = getDouble("Ange lånets räntesats: ");
