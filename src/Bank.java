@@ -48,13 +48,19 @@ public class Bank {
         }
     }
     
-    public static void createCustomer() { //TODO: Felhantering, inga duplicates.
-        Customer customer;
-        String name = getString("Mata in kundens namn: ");
-        String personalNumber = getString("Mata in kundens personnummer: ");
-        
-        customerList.add(new Customer(name, personalNumber));
-        
+    public static void createCustomer() {
+        while (true) {
+            String name = getString("Mata in kundens namn: ");
+            String personalNumber = getString("Mata in kundens personnummer: ");
+            try {
+                getCustomer(personalNumber);
+                System.out.println("Kunden finns redan! ");
+            } catch (CustomerNotFoundException e) {
+                customerList.add(new Customer(name, personalNumber));
+                break;
+            }
+        }
+    
     }
     
     public static void createTestUsers() {
