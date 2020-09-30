@@ -88,7 +88,7 @@ public class Bank {
     private static Double getDouble(String question) {
         while (true) {
             try {
-                System.out.println(question);
+                System.out.print(question);
                 return Double.parseDouble(in.nextLine().replace(',', '.'));
             } catch (NumberFormatException e) {
                 System.out.println("Ogiltigt värde! ");
