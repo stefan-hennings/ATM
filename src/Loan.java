@@ -23,7 +23,7 @@ public class Loan {
     }
     
     public void pay(double amountPaid) {
-        this.debt -= amountPaid;
+        debt -= amountPaid;
     }
     
     public UUID getLoanNumber() {
@@ -44,10 +44,5 @@ public class Loan {
     
     public void updateInterestRate(double interestRate, Employee manager) {
         loanHistory.add(new LoanStatus(manager, interestRate));
-    }
-    
-    public void changeManager(Employee manager) {
-        
-        this.manager = manager;
     }
 }

@@ -1,13 +1,21 @@
-import java.util.UUID;
+
 
 public class Person {
     private String name;
     private final String personalId;
-    private final UUID customerId;
-    
+
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPersonalId() {
+        return personalId;
+    }
+
     public Person(String name, String personalId) {
         this.name = name;
         this.personalId = personalId;
-        this.customerId = UUID.randomUUID();
+
     }
 }

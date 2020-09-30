@@ -6,10 +6,11 @@ public class Account {
     private double interestRate = 0.03;
     Customer customer;
     
-    public Account(double accountBalance, double interestRate) {
+    public Account(double accountBalance, double interestRate, Customer customer) {
         this.accountBalance = accountBalance;
         this.interestRate = interestRate;
         accountNumber = UUID.randomUUID();
+        this.customer = customer;
     }
     
     public void changeBalance(double change) {

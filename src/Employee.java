@@ -5,4 +5,12 @@ public class Employee extends Person {
         super(name, personalId);
         this.salary = salary;
     }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
 }
