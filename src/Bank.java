@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class Bank {
     static Scanner in = new Scanner(System.in);
+    static Employee employee;
     
     public static void testCode() {
         Customer oscar = new Customer("Oscar", "xxx");
@@ -31,6 +32,7 @@ public class Bank {
     
     public static void welcomeMenu() {
         String input;
+        employee = findEmployee();
         boolean running = true;
         while (running) {
             println("\nVälj vad du vill göra:\n" +
@@ -38,6 +40,7 @@ public class Bank {
                     "2. Anställ någon\n" +
                     "3. Konto\n" +
                     "4. Lån\n" +
+                    "5. Byt inloggning\n" +
                     "5. Avsluta");
             
             input = in.nextLine();
@@ -47,8 +50,9 @@ public class Bank {
                 case "2" -> createEmployee();
                 case "3" -> accountMenu();
                 case "4" -> loanMenu();
-                case "5" -> running = exitMenu();
-                default -> println("Ange ett giltigt val! (1-5)");
+                case "5" -> employee = findEmployee();
+                case "6" -> running = exitMenu();
+                default -> println("Ange ett giltigt val! (1-6)");
             }
         }
     }
@@ -104,7 +108,7 @@ public class Bank {
                 case "6" -> customer.viewAllAccounts();
                 case "7" -> customer = findCustomer();
                 case "8" -> {return;}
-                default -> println("Ange ett giltigt val! (1-7)");
+                default -> println("Ange ett giltigt val! (1-8)");
             }
         }
     }
@@ -135,7 +139,6 @@ public class Bank {
     
     
     public static void createLoan() {
-        Employee employee = findEmployee();
         Customer customer = findCustomer();
         
         double loanAmount = getDouble("Ange lånets storlek: ");
@@ -153,7 +156,6 @@ public class Bank {
         String loanId = getString("Mata in lånId: ");
         
         double newInterestRate = getDouble("Mata in nya räntan: ");
-        Employee employee = findEmployee();
         Customer customer = findCustomer();
         Loan loan = searchForLoanInListOfLoan(customer, loanId);
         if (loan == null) {

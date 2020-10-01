@@ -14,9 +14,8 @@ public class Customer extends Person {
     }
     
     public void createAccount() {
-        Employee employee = Bank.findEmployee();
         double depositAmount = Bank.getDouble("Ange belopp att sätta in: ");
-        addAccount(depositAmount, employee);
+        addAccount(depositAmount, Bank.employee);
         Bank.println("Nytt konto skapat med " + accountList.get(accountList.size()-1).getAccountBalance());
     }
     
@@ -45,9 +44,8 @@ public class Customer extends Person {
     
     public void changeAccountInterestRate() {
         Account account = findAccount();
-        Employee employee = Bank.findEmployee();
         double changeInterest = Bank.getDouble("Ange den nya räntan: ");
-        account.changeInterestRate(employee, changeInterest);
+        account.changeInterestRate(Bank.employee, changeInterest);
     }
     
     public void viewAllAccounts() {
