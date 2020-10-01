@@ -33,6 +33,8 @@ public class Bank {
     public static void welcomeMenu() {
         String input;
         employee = findEmployee();
+        println("Välkommen " + employee.getName() + "!");
+        
         boolean running = true;
         while (running) {
             println("\nVälj vad du vill göra:\n" +
@@ -50,7 +52,10 @@ public class Bank {
                 case "2" -> createEmployee();
                 case "3" -> accountMenu();
                 case "4" -> loanMenu();
-                case "5" -> employee = findEmployee();
+                case "5" -> {
+                    employee = findEmployee();
+                    println("Välkommen " + employee.getName() + "!");
+                }
                 case "6" -> running = exitMenu();
                 default -> println("Ange ett giltigt val! (1-6)");
             }
@@ -74,7 +79,6 @@ public class Bank {
     }
     
     public static void createEmployee() {
-        
         String name = getString("Mata in den anställdas namn: ");
         String personalNumber = getString("Mata in den anställdas personnummer: ");
         double salary = getDouble("Mata in den anställdas lön: ");
@@ -87,6 +91,7 @@ public class Bank {
     private static void accountMenu() {
         String input;
         Customer customer = findCustomer();
+        println(customer.getName() + " har valts. ");
         while (true) {
             println("\nVälj vad du vill göra:\n" +
                     "1. Öppna nytt konto\n" +
@@ -106,7 +111,10 @@ public class Bank {
                 case "4" -> customer.viewAccountBalance();
                 case "5" -> customer.changeAccountInterestRate();
                 case "6" -> customer.viewAllAccounts();
-                case "7" -> customer = findCustomer();
+                case "7" -> {
+                    customer = findCustomer();
+                    println(customer.getName() + " har valts. ");
+                }
                 case "8" -> {return;}
                 default -> println("Ange ett giltigt val! (1-8)");
             }
@@ -115,6 +123,7 @@ public class Bank {
     
     public static void loanMenu() {
         Customer customer = findCustomer();
+        println(customer.getName() + " har valts. ");
         String input;
         while (true) {
             println("\nVälj vad du vill göra:\n" +
@@ -134,7 +143,10 @@ public class Bank {
                 case "3" -> customer.printListOfInterestRateChanges();
                 case "4" -> customer.printAllLoans();
                 case "5" -> customer.repayLoan();
-                case "6" -> customer = findCustomer();
+                case "6" -> {
+                    customer = findCustomer();
+                    println(customer.getName() + " har valts. ");
+                }
                 case "7" -> {return;}
                 default -> println("Ange ett giltigt val! (1-7)");
             }
