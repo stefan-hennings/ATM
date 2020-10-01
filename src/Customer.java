@@ -34,11 +34,11 @@ public class Customer extends Person {
      */
     private String makeRandomCustomerId(){
         Random random = new Random();
-        String customerID = "";
+        StringBuilder customerID = new StringBuilder();
         for (int i = 0; i < 6; i++) {
-            customerID += random.nextInt(9);
+            customerID.append(random.nextInt(9));
         }
-        return customerID;
+        return customerID.toString();
     }
 
     public Loan getLatestLoan(){
@@ -55,9 +55,9 @@ public class Customer extends Person {
     }
 
     public static Account getAccount (Customer customer, String accountId){
-        for (Account a : customer.accountList) {
-            if (a.getAccountId().equals(accountId))
-            return a;
+        for (Account account : customer.accountList) {
+            if (account.getAccountId().equals(accountId))
+            return account;
         }
 
         return null;
