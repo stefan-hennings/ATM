@@ -53,13 +53,22 @@ public class Customer extends Person {
     public String  getCustomerId() {
         return customerId;
     }
-
-    public static Account getAccount (Customer customer, String accountId){
-        for (Account account : customer.accountList) {
+    
+    public Account findAccount(){
+        while (true) {
+            try {
+                return getAccount(Bank.getString("Ange kontonummer: "));
+            } catch (CustomerNotFoundException e) {
+                Bank.println(e.getMessage());
+            }
+        }
+    }
+    
+    public Account getAccount (String accountId){
+        for (Account account : accountList) {
             if (account.getAccountId().equals(accountId))
             return account;
         }
-
-        return null;
+        throw new ObjectNotFoundException("Kontot finns inte. ");
     }
 }

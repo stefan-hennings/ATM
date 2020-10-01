@@ -117,34 +117,30 @@ public class Bank {
         public static void accountDeposit(){
 
 
-        Customer c = findCustomer();
-        String accountId = getString("Mata in konto Id: ");
-        Account account = Customer.getAccount(c, accountId );
+        Customer customer = findCustomer();
+        Account account = customer.findAccount();
         double changeBalance = getDouble("Ange belopp du vill ta sätta in: ");
         account.changeBalance(changeBalance);
     }
 
         public static void accountWithdraw(){
 
-        Customer c = findCustomer();
-        String accountId = getString("Mata in konto Id: ");
-        Account account = Customer.getAccount(c, accountId );
+        Customer customer = findCustomer();
+        Account account = customer.findAccount();
         double changeBalance = -1 * getDouble("Ange belopp du vill ta ut: ");
         account.changeBalance(changeBalance);
     }
 
         public static void viewAccountBalance(){
-            Customer c = findCustomer();
-            String accountId = getString("Mata in konto Id: ");
-            Account account = Customer.getAccount(c, accountId );
+            Customer customer = findCustomer();
+            Account account = customer.findAccount();
             println("Saldo: " + account.getAccountBalance());
         }
 
         public static void changeAccountInterestRate(){
 
-        Customer c = findCustomer();
-        String accountId = getString("Mata in konto Id: ");
-        Account account = Customer.getAccount(c, accountId );
+        Customer customer = findCustomer();
+        Account account = customer.findAccount();
         double changeInterest = getDouble("Ange den nya räntan: ");
         account.changeInterestRate(changeInterest);
     }
@@ -294,7 +290,7 @@ public class Bank {
     }
     
     
-    private static void print(String output) {
+    public static void print(String output) {
         System.out.print(output);
     }
     
@@ -302,7 +298,7 @@ public class Bank {
         System.out.println(output);
     }
     
-    private static String getString(String question) {
+    public static String getString(String question) {
         String response = null;
         while (response == null || response.isEmpty()) {
             print(question);
@@ -311,7 +307,7 @@ public class Bank {
         return response;
     }
     
-    private static double getDouble(String question) {
+    public static double getDouble(String question) {
         while (true) {
             try {
                 print(question);
@@ -322,7 +318,7 @@ public class Bank {
         }
     }
     
-    private static int getInt(String question) {
+    public static int getInt(String question) {
         while (true) {
             try {
                 print(question);
