@@ -4,6 +4,7 @@ public class Main {
         Bank.welcomeMenu();
 
         //TODO: Fixa till din skit och variable namn!
+        // DONE!
 
     }
 

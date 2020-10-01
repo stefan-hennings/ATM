@@ -23,6 +23,8 @@ public class Bank {
 
         oscar.addLoan(loan1);
         oscar.addLoan(loan2);
+        patrik.addLoan(loan3);
+        patrik.addLoan(loan4);
     }
 
      static List<Customer> customerList = new ArrayList<>();
@@ -52,25 +54,6 @@ public class Bank {
         }
         welcomeMenu();
     }
-
-    public static void handleLoan(){
-        String input;
-        System.out.println("Vad vill du göra?\n" +
-                "1. Ändra räntan på lån\n" +
-                "2. Skriva ut lista med ändringar för ett lån\n" +
-                "3. Gå till huvudmenyn");
-
-        input = in.nextLine();
-
-        switch (input){
-            case "1" -> changeInterestRateOnLoan();
-            case "2" -> printListOfRateChanges();
-            case "3" -> welcomeMenu();
-            default -> System.out.println("Ange ett giltigt val! (1-3)");
-        }
-        handleLoan();
-    }
-
     public static void createCustomer() { //TODO: Felhantering, inga duplicates.
 
         String name = getString("Mata in kundens namn: ");
@@ -119,6 +102,73 @@ public class Bank {
         c.addLoan(loan);
         System.out.println("Lån på " + c.getLoan().getDebt() +" skapat till " + c.getName());
         welcomeMenu();
+    }
+
+    public static void handleLoan(){
+        String input;
+        System.out.println("Vad vill du göra?\n" +
+                "1. Ändra räntan på lån\n" +
+                "2. Skriva ut lista med ändringar för ett lån\n" +
+                "3. Gå till huvudmenyn");
+
+        input = in.nextLine();
+
+        switch (input){
+            case "1" -> changeInterestRateOnLoan();
+            case "2" -> printListOfRateChanges();
+            case "3" -> welcomeMenu();
+            default -> System.out.println("Ange ett giltigt val! (1-3)");
+        }
+        handleLoan();
+    }
+    /**
+     * Method that changes the value of the loan rate
+     */
+    public static void changeInterestRateOnLoan(){
+        String name = getString("Mata in lånetagarens namn: ");
+        String perNum = getString("Mata in lånepersonnummer: ");
+        String loanId = getString("Mata in lånId: ");
+        String employeeId = getString("Mata in anställdast persnummer: ");
+        String newInterestString = getString("Mata in nya räntan: ");
+        int newInterestRate;
+
+        newInterestRate = Integer.parseInt(newInterestString);
+        Employee e = getEmployee(employeeId);
+        Customer c = getCustomer(name, perNum);
+        if (c != null) {
+            Loan l = searchForLoanInListOfLoan(c, loanId);
+            if (l == null){
+                System.out.println("Finns inget lån med det ID");
+            }else {
+                l.updateInterestRate(newInterestRate, e);
+            }
+        }
+        System.out.println("\nRäntan är ändrad till " + newInterestString + "% för lån " + loanId + "\n");
+
+    }
+
+    /**
+     * Writes a list of the history of changes to a loan
+     */
+    public static void printListOfRateChanges(){
+        String loan = getString("Mata in lånID: ");
+        String customer = getString("Mata in lånetagare: ");
+        String personalNumber = getString("Mata in lånetagarens personnummer: ");
+
+        Customer c = getCustomer(customer,personalNumber);
+
+        if (c != null) {
+            Loan l = searchForLoanInListOfLoan(c, loan);
+            if (l == null){
+                System.out.println("Finns inget lån med det ID");
+            }else {
+                for (int i = 0; i < l.getLoanHistory().size() ; i++) {
+                    System.out.print(l.getLoanHistory().get(i).getListOfChanges() + "\n");
+                }
+
+            }
+        }
+
     }
 
     public static void exitMenu(){
@@ -171,32 +221,6 @@ public class Bank {
     }
 
     /**
-     * Method that changes the value of the loan rate
-     */
-    public static void changeInterestRateOnLoan(){
-        String name = getString("Mata in lånetagarens namn: ");
-        String perNum = getString("Mata in lånepersonnummer: ");
-        String loanId = getString("Mata in lånId: ");
-        String employeeId = getString("Mata in anställdast persnummer: ");
-        String newInterestString = getString("Mata in nya räntan: ");
-        int newInterestRate;
-
-        newInterestRate = Integer.parseInt(newInterestString);
-        Employee e = getEmployee(employeeId);
-        Customer c = getCustomer(name, perNum);
-        if (c != null) {
-            Loan l = searchForLoanInListOfLoan(c, loanId);
-            if (l == null){
-                System.out.println("Finns inget lån med det ID");
-            }else {
-                l.updateInterestRate(newInterestRate, e);
-            }
-        }
-        System.out.println("\nRäntan är ändrad till " + newInterestString + "% för lån " + loanId + "\n");
-
-    }
-
-    /**
      * Search for a loan in a list of loans
      * @param c Customer of the the loan
      * @param loanId ID number of the loan
@@ -211,27 +235,5 @@ public class Bank {
 
     }
 
-    /**
-     * Writes a list of the history of changes to a loan
-     */
-    public static void printListOfRateChanges(){
-        String loan = getString("Mata in lånID: ");
-        String customer = getString("Mata in lånetagare: ");
-        String personalNumber = getString("Mata in lånetagarens personnummer: ");
 
-        Customer c = getCustomer(customer,personalNumber);
-
-        if (c != null) {
-            Loan l = searchForLoanInListOfLoan(c, loan);
-            if (l == null){
-                System.out.println("Finns inget lån med det ID");
-            }else {
-                for (int i = 0; i < l.getLoanHistory().size() ; i++) {
-                    System.out.print(l.getLoanHistory().get(i).getListOfChanges() + "\n");
-                }
-
-            }
-        }
-
-    }
 }
