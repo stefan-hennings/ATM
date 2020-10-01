@@ -81,7 +81,8 @@ public class Customer extends Person {
     }
     
     public void repayLoan() {
-    
+        Loan loan = findLoan();
+        loan.repay(Bank.getDouble("Hur mycket ska betalas tillbaka? "));
     }
     
     public void createAccount() {
