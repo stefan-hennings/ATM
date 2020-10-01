@@ -106,6 +106,7 @@ public class Bank {
         Customer customer = findCustomer();
         double depositAmount = getDouble("Ange belopp att sätta in: ");
         customer.addAccount(depositAmount);
+        println("Nytt konto skapat med " + customer.getAccountList().get(customer.getAccountList().size()-1).getAccountBalance());
     }
 
         public static void accountDeposit(){
@@ -115,6 +116,7 @@ public class Bank {
         Account account = customer.findAccount();
         double changeBalance = getDouble("Ange belopp du vill ta sätta in: ");
         account.changeBalance(changeBalance);
+        println("Kontobalans är nu " + account.getAccountBalance());
     }
 
         public static void accountWithdraw(){
@@ -123,6 +125,7 @@ public class Bank {
         Account account = customer.findAccount();
         double changeBalance = -1 * getDouble("Ange belopp du vill ta ut: ");
         account.changeBalance(changeBalance);
+        println("Kontobalans är nu " + account.getAccountBalance());
     }
 
         public static void viewAccountBalance(){

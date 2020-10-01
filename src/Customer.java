@@ -67,6 +67,10 @@ public class Customer extends Person {
         }
     }
     
+    public List<Account> getAccountList() {
+        return accountList;
+    }
+    
     public Account getAccount (int accountNumber){
         for (Account account : accountList) {
             if (account.getAccountNumber() == accountNumber)
