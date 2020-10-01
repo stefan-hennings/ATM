@@ -13,7 +13,7 @@ public class Customer extends Person {
         this.customerId = makeRandomCustomerId();
     }
     
-    public void createLoan() {
+    public void applyForLoan() {
         double loanAmount = Bank.getDouble("Ange lånets storlek: ");
         double interest = Bank.getDouble("Ange lånets räntesats: ");
         
@@ -25,36 +25,29 @@ public class Customer extends Person {
      * Method that changes the value of the loan rate
      */
     public void changeInterestRateOnLoan() {
-        int loanId = Bank.getInt("Mata in lånId: ");
-        
+        Loan loan = findLoan();
         double newInterestRate = Bank.getDouble("Mata in nya räntan: ");
-        Loan loan = getLoanFromList(loanId);
-        if (loan == null) {
-            Bank.println("Finns inget lån med det ID");
-        } else {
-            loan.updateInterestRate(newInterestRate, Bank.employee);
-        }
-        
-        Bank.println("\nRäntan är ändrad till " + newInterestRate + "% för lån " + loanId + "\n");
-        
+        loan.updateInterestRate(newInterestRate, Bank.employee);
+        Bank.println("\nRäntan är ändrad till " + newInterestRate + "% för lån " + loan.getLoanID() + "\n");
     }
     
     /**
      * Writes a list of the history of changes to a loan
      */
-    public void printListOfRateChanges() {
-        Loan loan;
-        while (true) {
-            try {
-                int loanId = Bank.getInt("Mata in lånID: ");
-                loan = getLoanFromList(loanId);
-                break;
-            } catch (Exception e) {
-                Bank.println(e.getMessage());
-            }
-        }
+    public void printListOfInterestRateChanges() {
+        Loan loan = findLoan();
         for (InterestHistory currentLoan : loan.getLoanHistory()) {
             Bank.println(currentLoan.getListOfChanges());
+        }
+    }
+    
+    public Loan findLoan() {
+        while (true) {
+            try {
+                return getLoanFromList(Bank.getInt("Mata in lånID: "));
+            } catch (ObjectNotFoundException e) {
+                Bank.println(e.getMessage());
+            }
         }
     }
     
@@ -77,7 +70,7 @@ public class Customer extends Person {
     /**
      * Writes a list of all loans for a customer
      */
-    public void allLoansForACustomer() {
+    public void printAllLoans() {
         Bank.println(getName() + " har totalt " + loanList.size() + " lån hos banken");
         for (Loan currentLoan : loanList) {
             Bank.println("\nLån: " + currentLoan.getLoanID() +
@@ -85,6 +78,10 @@ public class Customer extends Person {
                     "\nRänta på lån: " + currentLoan.getInterestRate() +
                     "\nAnsvarig på banken: " + currentLoan.getManager().getName() + "\n");
         }
+    }
+    
+    public void repayLoan() {
+    
     }
     
     public void createAccount() {

@@ -122,18 +122,21 @@ public class Bank {
                     "2. Ändra räntan på ett befintligt lån lån\n" +
                     "3. Skriva ut lista med ändringar för ett lån\n" +
                     "4. Skriva ut lista för kundens alla lån\n" +
-                    "5. Gå till huvudmenyn");
+                    "5. Betala tillbaka lån\n" +
+                    "6. Byt kund\n" +
+                    "7. Gå till huvudmenyn");
             
             input = in.nextLine();
             
             switch (input) {
-                case "1" -> customer.createLoan();
+                case "1" -> customer.applyForLoan();
                 case "2" -> customer.changeInterestRateOnLoan();
-                case "3" -> customer.printListOfRateChanges();
-                case "4" -> customer.allLoansForACustomer();
-                case "5" -> customer = findCustomer();
-                case "6" -> {return;}
-                default -> println("Ange ett giltigt val! (1-6)");
+                case "3" -> customer.printListOfInterestRateChanges();
+                case "4" -> customer.printAllLoans();
+                case "5" -> customer.repayLoan();
+                case "6" -> customer = findCustomer();
+                case "7" -> {return;}
+                default -> println("Ange ett giltigt val! (1-7)");
             }
         }
     }
