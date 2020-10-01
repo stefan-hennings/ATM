@@ -99,7 +99,7 @@ public class Bank {
         double insertAmount = getDouble("Ange belopp att sätta in: ");
 
         Customer c = getCustomer(customerName, customerPersonalNumber);
-        //TODO: fixa nullpointer på addAccount
+        assert c != null;
         c.addAccount(new Account(insertAmount, c));
         System.out.println("Nytt konto skapat");
     }
