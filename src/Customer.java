@@ -41,7 +41,7 @@ public class Customer extends Person {
         return customerID;
     }
 
-    public Loan getLoan(){
+    public Loan getLatestLoan(){
         return loanList.get(loanList.size()-1);
     }
 
