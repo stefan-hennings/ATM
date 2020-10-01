@@ -16,13 +16,13 @@ public class Bank {
         employeeList.add(stefan);
         employeeList.add(julia);
 
-        oscar.grantLoan(25000, stefan, 2);
-        oscar.grantLoan(35000, stefan, 3);
-        patrik.grantLoan(10000, julia, 2);
-        patrik.grantLoan(15000, julia, 4);
+        oscar.grantLoan(25000, stefan, 2); //Loan 1
+        oscar.grantLoan(35000, stefan, 3); //Loan 2
+        patrik.grantLoan(10000, julia, 2); //Loan 1
+        patrik.grantLoan(15000, julia, 4); //Loan 2
 
-        oscar.addAccount(new Account(30000, oscar, "1"));
-        patrik.addAccount(new Account(100000, patrik, "1"));
+        oscar.addAccount(30000);
+        patrik.addAccount(100000);
     }
     
     static List<Customer> customerList = new ArrayList<>();
@@ -104,9 +104,8 @@ public class Bank {
     
     public static void createAccount() {
         Customer customer = findCustomer();
-        double insertAmount = getDouble("Ange belopp att sätta in: ");
-        String accountId = getString("Ange konto ID");
-        customer.addAccount(new Account(insertAmount, customer, accountId));
+        double depositAmount = getDouble("Ange belopp att sätta in: ");
+        customer.addAccount(depositAmount);
     }
 
         public static void accountDeposit(){

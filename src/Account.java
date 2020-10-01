@@ -1,15 +1,12 @@
-import java.util.UUID;
-
 public class Account {
-    private String accountId;
+    private int accountNumber;
     private double accountBalance;
     private double interestRate = 0;
-    Customer customer;
+//    Customer customer;
     
-    public Account(double accountBalance, Customer customer, String accountNumber) {
+    public Account(double accountBalance, int accountNumber) {
         this.accountBalance = accountBalance;
-        this.accountId = accountNumber;
-        this.customer = customer;
+        this.accountNumber = accountNumber;
     }
     
     public void changeBalance(double change) {
@@ -23,8 +20,8 @@ public class Account {
         interestRate = newInterest;
     }
 
-    public String getAccountId() {
-        return accountId;
+    public int getAccountNumber() {
+        return accountNumber;
     }
 
     public double getAccountBalance() {

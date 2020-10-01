@@ -19,8 +19,8 @@ public class Customer extends Person {
     }
 
     
-    public void addAccount(Account account) {
-        accountList.add(account);
+    public void addAccount(double accountBalance) {
+        accountList.add(new Account(accountBalance, accountList.size()+1));
     }
     
     public void addLoan(Loan loan) {
@@ -60,16 +60,16 @@ public class Customer extends Person {
     public Account findAccount(){
         while (true) {
             try {
-                return getAccount(Bank.getString("Ange kontonummer: "));
+                return getAccount(Bank.getInt("Ange kontonummer: "));
             } catch (CustomerNotFoundException e) {
                 Bank.println(e.getMessage());
             }
         }
     }
     
-    public Account getAccount (String accountId){
+    public Account getAccount (int accountNumber){
         for (Account account : accountList) {
-            if (account.getAccountId().equals(accountId))
+            if (account.getAccountNumber() == accountNumber)
             return account;
         }
         throw new ObjectNotFoundException("Kontot finns inte. ");
