@@ -53,4 +53,13 @@ public class Customer extends Person {
     public String  getCustomerId() {
         return customerId;
     }
+
+    public static Account getAccount (Customer custumer, String accountId){
+        for (Account a : custumer.accountList) {
+            if (a.getAccountId().equals(accountId));
+            return a;
+        }
+
+        return null;
+    }
 }

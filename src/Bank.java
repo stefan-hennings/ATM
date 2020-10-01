@@ -25,6 +25,9 @@ public class Bank {
         oscar.addLoan(loan2);
         patrik.addLoan(loan3);
         patrik.addLoan(loan4);
+
+        oscar.addAccount(new Account(30000, oscar, "1"));
+        patrik.addAccount(new Account(100000, patrik, "1"));
     }
     
     static List<Customer> customerList = new ArrayList<>();
@@ -36,17 +39,16 @@ public class Bank {
         System.out.println("\nVälj vad du vill göra:\n" +
                 "1. Lägg till ny kund\n" +
                 "2. Anställ någon\n" +
-                "3. Öppna konto\n" +
-                "4. Öppna lån\n" +
-                "5. Hantera lån\n" +
-                "6. Avsluta");
+                "3. Konto\n" +
+                "4. Lån\n" +
+                "5. Avsluta");
         
         input = in.nextLine();
         
         switch (input) {
             case "1" -> createCustomer();
             case "2" -> createEmployee();
-            case "3" -> createAccount();
+            case "3" -> accountMenu();
             case "4" -> createLoan();
             case "5" -> handleLoanMenu();
             case "6" -> exitMenu();
@@ -81,8 +83,31 @@ public class Bank {
         System.out.println("Ny anställd skapad");
         
     }
+
+    private static void accountMenu(){
+        String input;
+        System.out.println("\nVälj vad du vill göra:\n" +
+                "1. Öppna nytt konto\n" +
+                "2. Gör insättning\n" +
+                "3. Gör uttag\n" +
+                "4. Saldo\n"+
+                "5. Ändra ränta\n" +
+                "6. Återgå till huvudmenyn");
+        input = in.nextLine();
+
+        switch (input) {
+            case "1" -> createAccount();
+            case "2" -> accountDeposit();
+            case "3" -> accountWithdraw();
+            case "4" -> viewAccountBalance();
+            case "5" -> changeAccountInterestRate();
+            case "6" -> welcomeMenu();
+            default -> System.out.println("Ange ett giltigt val! (1-5)");
+        }
+        accountMenu();
+    }
     
-    public static void createAccount() {
+        public static void createAccount() {
         Customer customer;
         while (true) {
             try {
@@ -93,8 +118,45 @@ public class Bank {
             }
         }
         double insertAmount = getDouble("Ange belopp att sätta in: ");
-        customer.addAccount(new Account(insertAmount, customer));
+        String accountId = getString("Ange konto ID");
+        customer.addAccount(new Account(insertAmount, customer, accountId));
     }
+
+        public static void accountDeposit(){
+
+
+        Customer c = findCustomer();
+        String accountId = getString("Mata in konto Id: ");
+        Account account = Customer.getAccount(c, accountId );
+        double changeBalance = getDouble("Ange belopp du vill ta sätta in: ");
+        account.changeBalance(changeBalance);
+    }
+
+        public static void accountWithdraw(){
+
+        Customer c = findCustomer();
+        String accountId = getString("Mata in konto Id: ");
+        Account account = Customer.getAccount(c, accountId );
+        double changeBalance = -1 * getDouble("Ange belopp du vill ta ut: ");
+        account.changeBalance(changeBalance);
+    }
+
+        public static void viewAccountBalance(){
+            Customer c = findCustomer();
+            String accountId = getString("Mata in konto Id: ");
+            Account account = Customer.getAccount(c, accountId );
+            System.out.println("Saldo: " + account.getAccountBalance());
+        }
+
+        public static void changeAccountInterestRate(){
+
+        Customer c = findCustomer();
+        String accountId = getString("Mata in konto Id: ");
+        Account account = Customer.getAccount(c, accountId );
+        double changeInterest = getDouble("Ange den nya räntan: ");
+        account.changeInterestRate(changeInterest);
+    }
+
     
     public static void createLoan() {
         String employeePersonalNumber = getString("Ange ditt personnummer: ");
@@ -278,13 +340,13 @@ public class Bank {
     /**
      * Search for a loan in a list of loans
      *
-     * @param c      Customer of the the loan
+     * @param customer      Customer of the the loan
      * @param loanId ID number of the loan
      *
      * @return Loan
      */
-    public static Loan searchForLoanInListOfLoan(Customer c, String loanId) {
-        for (Loan l : c.getLoanList()) {
+    public static Loan searchForLoanInListOfLoan(Customer customer, String loanId) {
+        for (Loan l : customer.getLoanList()) {
             if (l.getLoanID() == Integer.parseInt(loanId)) {
                 return l;
             }

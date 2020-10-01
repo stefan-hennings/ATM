@@ -1,14 +1,14 @@
 import java.util.UUID;
 
 public class Account {
-    private UUID accountNumber;
+    private String accountId;
     private double accountBalance;
     private double interestRate = 0;
     Customer customer;
     
-    public Account(double accountBalance, Customer customer) {
+    public Account(double accountBalance, Customer customer, String accountNumber) {
         this.accountBalance = accountBalance;
-        accountNumber = UUID.randomUUID();
+        this.accountId = accountNumber;
         this.customer = customer;
     }
     
@@ -21,5 +21,13 @@ public class Account {
     }
     public void changeInterestRate(double newInterest){
         interestRate = newInterest;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public double getAccountBalance() {
+        return accountBalance;
     }
 }
