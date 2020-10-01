@@ -49,9 +49,8 @@ public class Bank {
             case "1" -> createCustomer();
             case "2" -> createEmployee();
             case "3" -> accountMenu();
-            case "4" -> createLoan();
-            case "5" -> handleLoanMenu();
-            case "6" -> exitMenu();
+            case "4" -> loanMenu();
+            case "5" -> exitMenu();
             default -> System.out.println("Ange ett giltigt val! (1-5)");
         }
         welcomeMenu();
@@ -102,6 +101,7 @@ public class Bank {
             case "4" -> viewAccountBalance();
             case "5" -> changeAccountInterestRate();
             case "6" -> welcomeMenu();
+            //TODO lägg till ett val för att se alla konton en Customer har
             default -> System.out.println("Ange ett giltigt val! (1-5)");
         }
         accountMenu();
@@ -157,8 +157,31 @@ public class Bank {
         account.changeInterestRate(changeInterest);
     }
 
+    public static void loanMenu(){
+
+        String input;
+        System.out.println("\nVälj vad du vill göra:\n" +
+                "1. Ansök om nytt lån\n" +
+                "2. Ändra räntan på ett befintligt lån lån\n" +
+                "3. Skriva ut lista med ändringar för ett lån\n" +
+                "4. Skriva ut lista för kundens alla lån\n" +
+                "5. Gå till huvudmenyn");
+
+        input = in.nextLine();
+
+        switch (input) {
+            case "1" -> createLoan();
+            case "2" -> changeInterestRateOnLoan();
+            case "3" -> printListOfRateChanges();
+            case "4" -> allLoansForACustomer();
+            case "5" -> welcomeMenu();
+            default -> System.out.println("Ange ett giltigt val! (1-5)");
+        }
+        loanMenu();
+    }
+
     
-    public static void createLoan() {
+        public static void createLoan() {
         String employeePersonalNumber = getString("Ange ditt personnummer: ");
         String customerName = getString("Ange kundens namn: ");
         String customerPersonalNumber = getString("Ange kundens personnummer: ");
@@ -175,31 +198,12 @@ public class Bank {
         System.out.println("Lån på " + c.getLatestLoan().getDebt() + " skapat till " + c.getName());
         welcomeMenu();
     }
+
     
-    public static void handleLoanMenu() {
-        String input;
-        System.out.println("Vad vill du göra?\n" +
-                "1. Ändra räntan på lån\n" +
-                "2. Skriva ut lista med ändringar för ett lån\n" +
-                "3. Skriva ut lista för kundens alla lån\n" +
-                "4. Gå till huvudmenyn");
-        
-        input = in.nextLine();
-        
-        switch (input) {
-            case "1" -> changeInterestRateOnLoan();
-            case "2" -> printListOfRateChanges();
-            case "3" -> allLoansForACustomer();
-            case "4" -> welcomeMenu();
-            default -> System.out.println("Ange ett giltigt val! (1-3)");
-        }
-        handleLoanMenu();
-    }
-    
-    /**
+         /**
      * Method that changes the value of the loan rate
      */
-    public static void changeInterestRateOnLoan() {
+        public static void changeInterestRateOnLoan() {
         String perNum = getString("Mata in lånepersonnummer: ");
         String loanId = getString("Mata in lånId: ");
         String employeeId = getString("Mata in anställdast persnummer: ");
@@ -221,10 +225,10 @@ public class Bank {
         
     }
     
-    /**
+         /**
      * Writes a list of the history of changes to a loan
      */
-    public static void printListOfRateChanges() {
+        public static void printListOfRateChanges() {
         String loan = getString("Mata in lånID: ");
         String personalNumber = getString("Mata in lånetagarens personnummer: ");
         
@@ -244,10 +248,10 @@ public class Bank {
         
     }
     
-    /**
+         /**
      * Writes a list of all loans for a customer
      */
-    public static void allLoansForACustomer() {
+         public static void allLoansForACustomer() {
         String customerName = getString("Mata in kundens namn: ");
         String customerNumber = getString("Mata in personnummer: ");
         
@@ -262,7 +266,7 @@ public class Bank {
                             "\nAnsvarig på banken: " + c.getLoanList().get(i).getManager().getName());
         }
         System.out.println();
-        handleLoanMenu();
+        loanMenu();
     }
     
     public static void exitMenu() {
