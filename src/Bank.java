@@ -21,8 +21,8 @@ public class Bank {
         patrik.grantLoan(10000, julia, 2); //Loan 1
         patrik.grantLoan(15000, julia, 4); //Loan 2
         
-        oscar.addAccount(30000);
-        patrik.addAccount(100000);
+        oscar.addAccount(30000, stefan);
+        patrik.addAccount(100000, julia);
     }
     
     private static final List<Customer> customerList = new ArrayList<>();
@@ -89,7 +89,8 @@ public class Bank {
                     "3. Gör uttag\n" +
                     "4. Saldo\n" +
                     "5. Ändra ränta\n" +
-                    "6. Återgå till huvudmenyn");
+                    "6. Visa alla konton\n" +
+                    "7. Återgå till huvudmenyn");
             input = in.nextLine();
             
             switch (input) {
@@ -98,17 +99,18 @@ public class Bank {
                 case "3" -> accountWithdraw();
                 case "4" -> viewAccountBalance();
                 case "5" -> changeAccountInterestRate();
-                case "6" -> {return;}
-                //TODO lägg till ett val för att se alla konton en Customer har
-                default -> println("Ange ett giltigt val! (1-5)");
+                case "6" -> viewAllAccounts();
+                case "7" -> {return;}
+                default -> println("Ange ett giltigt val! (1-7)");
             }
         }
     }
     
     public static void createAccount() {
         Customer customer = findCustomer();
+        Employee employee = findEmployee();
         double depositAmount = getDouble("Ange belopp att sätta in: ");
-        customer.addAccount(depositAmount);
+        customer.addAccount(depositAmount, employee);
         println("Nytt konto skapat med " + customer.getAccountList().get(customer.getAccountList().size() - 1).getAccountBalance());
     }
     
@@ -148,6 +150,13 @@ public class Bank {
         Employee employee = findEmployee();
         double changeInterest = getDouble("Ange den nya räntan: ");
         account.changeInterestRate(employee, changeInterest);
+    }
+    
+    public static void viewAllAccounts() {
+        Customer customer = findCustomer();
+        for (Account account : customer.getAccountList()) {
+            println("" + account);
+        }
     }
     
     public static void loanMenu() {

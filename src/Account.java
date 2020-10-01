@@ -8,10 +8,10 @@ public class Account {
 
 //    Customer customer;
     
-    public Account(double accountBalance, int accountNumber) {
+    public Account(double accountBalance, int accountNumber, Employee employee) {
         this.accountBalance = accountBalance;
         this.accountNumber = accountNumber;
-        accountHistory.add(new InterestHistory(null, 0));
+        accountHistory.add(new InterestHistory(employee, 0));
     }
     
     public void changeBalance(double change) {
@@ -31,5 +31,18 @@ public class Account {
 
     public double getAccountBalance() {
         return accountBalance;
+    }
+    
+    public InterestHistory getCurrentInterestStatus(){
+        return accountHistory.get(accountHistory.size()-1);
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("Konto: %d\n" +
+                "Saldo: %.2f\n" +
+                "Ränta: %.2f%%\n" +
+                "Ansvarig: %s\n",
+                accountNumber, accountBalance, getCurrentInterestStatus().getInterestRate(), getCurrentInterestStatus().getManager());
     }
 }

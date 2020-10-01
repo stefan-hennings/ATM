@@ -13,4 +13,9 @@ public class Employee extends Person {
     public double getSalary() {
         return salary;
     }
+    
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

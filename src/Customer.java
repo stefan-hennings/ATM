@@ -13,8 +13,8 @@ public class Customer extends Person {
         this.customerId = makeRandomCustomerId();
     }
     
-    public void addAccount(double accountBalance) {
-        accountList.add(new Account(accountBalance, accountList.size()+1));
+    public void addAccount(double accountBalance, Employee employee) {
+        accountList.add(new Account(accountBalance, accountList.size()+1, employee));
     }
 
     /**
