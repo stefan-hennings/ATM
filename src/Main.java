@@ -6,6 +6,8 @@ public class Main {
         while(running)
         running = Bank.welcomeMenu();
 
+        //TODO: Fixa till din skit och variable namn!
+        // DONE!
 
     }
 
