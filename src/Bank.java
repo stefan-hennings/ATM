@@ -89,12 +89,13 @@ public class Bank {
     }
     
     public static void createLoan() {
-        String employeePersonalNumber = getString("Ange ditt personnummer: ");
+        Employee employee = findEmployee();
+        Customer customer = findCustomer();
+    
         double loanAmount = getDouble("Ange lånets storlek: ");
         double interest = getDouble("Ange lånets räntesats: ");
-        Customer customer = findCustomer();
-        Employee e = getEmployee(employeePersonalNumber);
-        Loan loan = new Loan(loanAmount, customer, e, interest);
+        
+        Loan loan = new Loan(loanAmount, customer, employee, interest);
         customer.addLoan(loan);
         System.out.println("Lån på " + customer.getLatestLoan().getDebt() + " skapat till " + customer.getName());
         welcomeMenu();
@@ -206,23 +207,22 @@ public class Bank {
     }
     
     public static Employee findEmployee() {
-        Employee employee = null;
-        while (employee == null) {
-            employee = getEmployee(getString("Ange ditt personnummer: "));
-            if (employee == null) {
-                System.out.println("Ogiltigt personnummer! ");
+        while (true) {
+            try {
+                return getEmployee(getString("Ange kundens personnummer: "));
+            } catch (EmployeeNotFoundException e) {
+                System.out.println(e.getMessage());
             }
         }
-        return employee;
     }
     
     public static Employee getEmployee(String personalNumber) {
-        for (var e : employeeList) {
-            if (e.getPersonalId().equalsIgnoreCase(personalNumber)) {
-                return e;
+        for (Employee employee : employeeList) {
+            if (employee.getPersonalId().equalsIgnoreCase(personalNumber)) {
+                return employee;
             }
         }
-        return null;
+        throw new EmployeeNotFoundException("Det finns ingen anställd med det person numret. ");
     }
     
     
