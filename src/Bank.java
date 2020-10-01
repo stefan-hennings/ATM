@@ -31,24 +31,26 @@ public class Bank {
     
     public static void welcomeMenu() {
         String input;
-        println("\nVälj vad du vill göra:\n" +
-                "1. Lägg till ny kund\n" +
-                "2. Anställ någon\n" +
-                "3. Konto\n" +
-                "4. Lån\n" +
-                "5. Avsluta");
-        
-        input = in.nextLine();
-        
-        switch (input) {
-            case "1" -> createCustomer();
-            case "2" -> createEmployee();
-            case "3" -> accountMenu();
-            case "4" -> loanMenu();
-            case "5" -> exitMenu();
-            default -> println("Ange ett giltigt val! (1-5)");
+        boolean running = true;
+        while (running) {
+            println("\nVälj vad du vill göra:\n" +
+                    "1. Lägg till ny kund\n" +
+                    "2. Anställ någon\n" +
+                    "3. Konto\n" +
+                    "4. Lån\n" +
+                    "5. Avsluta");
+            
+            input = in.nextLine();
+            
+            switch (input) {
+                case "1" -> createCustomer();
+                case "2" -> createEmployee();
+                case "3" -> accountMenu();
+                case "4" -> loanMenu();
+                case "5" -> running = exitMenu();
+                default -> println("Ange ett giltigt val! (1-5)");
+            }
         }
-        welcomeMenu();
     }
     
     public static void createCustomer() {
@@ -80,26 +82,27 @@ public class Bank {
     
     private static void accountMenu() {
         String input;
-        println("\nVälj vad du vill göra:\n" +
-                "1. Öppna nytt konto\n" +
-                "2. Gör insättning\n" +
-                "3. Gör uttag\n" +
-                "4. Saldo\n" +
-                "5. Ändra ränta\n" +
-                "6. Återgå till huvudmenyn");
-        input = in.nextLine();
-        
-        switch (input) {
-            case "1" -> createAccount();
-            case "2" -> accountDeposit();
-            case "3" -> accountWithdraw();
-            case "4" -> viewAccountBalance();
-            case "5" -> changeAccountInterestRate();
-            case "6" -> welcomeMenu();
-            //TODO lägg till ett val för att se alla konton en Customer har
-            default -> println("Ange ett giltigt val! (1-5)");
+        while (true) {
+            println("\nVälj vad du vill göra:\n" +
+                    "1. Öppna nytt konto\n" +
+                    "2. Gör insättning\n" +
+                    "3. Gör uttag\n" +
+                    "4. Saldo\n" +
+                    "5. Ändra ränta\n" +
+                    "6. Återgå till huvudmenyn");
+            input = in.nextLine();
+            
+            switch (input) {
+                case "1" -> createAccount();
+                case "2" -> accountDeposit();
+                case "3" -> accountWithdraw();
+                case "4" -> viewAccountBalance();
+                case "5" -> changeAccountInterestRate();
+                case "6" -> {return;}
+                //TODO lägg till ett val för att se alla konton en Customer har
+                default -> println("Ange ett giltigt val! (1-5)");
+            }
         }
-        accountMenu();
     }
     
     public static void createAccount() {
@@ -149,24 +152,25 @@ public class Bank {
     public static void loanMenu() {
         
         String input;
-        println("\nVälj vad du vill göra:\n" +
-                "1. Ansök om nytt lån\n" +
-                "2. Ändra räntan på ett befintligt lån lån\n" +
-                "3. Skriva ut lista med ändringar för ett lån\n" +
-                "4. Skriva ut lista för kundens alla lån\n" +
-                "5. Gå till huvudmenyn");
-        
-        input = in.nextLine();
-        
-        switch (input) {
-            case "1" -> createLoan();
-            case "2" -> changeInterestRateOnLoan();
-            case "3" -> printListOfRateChanges();
-            case "4" -> allLoansForACustomer();
-            case "5" -> welcomeMenu();
-            default -> println("Ange ett giltigt val! (1-5)");
+        while (true) {
+            println("\nVälj vad du vill göra:\n" +
+                    "1. Ansök om nytt lån\n" +
+                    "2. Ändra räntan på ett befintligt lån lån\n" +
+                    "3. Skriva ut lista med ändringar för ett lån\n" +
+                    "4. Skriva ut lista för kundens alla lån\n" +
+                    "5. Gå till huvudmenyn");
+            
+            input = in.nextLine();
+            
+            switch (input) {
+                case "1" -> createLoan();
+                case "2" -> changeInterestRateOnLoan();
+                case "3" -> printListOfRateChanges();
+                case "4" -> allLoansForACustomer();
+                case "5" -> {return;}
+                default -> println("Ange ett giltigt val! (1-5)");
+            }
         }
-        loanMenu();
     }
     
     
@@ -179,7 +183,6 @@ public class Bank {
         
         customer.grantLoan(loanAmount, employee, interest);
         println("Lån på " + customer.getLatestLoan().getDebt() + " skapat till " + customer.getName());
-        welcomeMenu();
     }
     
     
@@ -236,17 +239,16 @@ public class Bank {
                             "\nAnsvarig på banken: " + currentLoan.getManager().getName() +
                             "\n");
         }
-        loanMenu();
     }
     
-    public static void exitMenu() {
+    public static boolean exitMenu() {
         String input = getString("Är du säker på att du vill avsluta? (j/n)");
         if (input.equalsIgnoreCase("j")) {
             println("Tack för besöket! Välkommen åter!");
-            System.exit(0);
+            return false;
         } else {
             println("Stanna så länge du vill!");
-            welcomeMenu();
+            return true;
         }
     }
     
