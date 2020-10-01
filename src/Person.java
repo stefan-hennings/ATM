@@ -16,6 +16,5 @@ public class Person {
     public Person(String name, String personalId) {
         this.name = name;
         this.personalId = personalId;
-
     }
 }
