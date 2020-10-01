@@ -48,7 +48,7 @@ public class Bank {
             case "2" -> createEmployee();
             case "3" -> createAccount();
             case "4" -> createLoan();
-            case "5" -> handleLoan();
+            case "5" -> handleLoanMenu();
             case "6" -> exitMenu();
             default -> System.out.println("Ange ett giltigt val! (1-5)");
         }
@@ -77,12 +77,11 @@ public class Bank {
     }
     
     public static void createAccount() {
-        String customerName = getString("Ange kundens namn: ");
         String customerPersonalNumber = getString("Ange kundens personnummer: ");
         
         double insertAmount = getDouble("Ange belopp att sätta in: ");
         
-        Customer c = getCustomer(customerName, customerPersonalNumber);
+        Customer c = getCustomer(customerPersonalNumber);
         //TODO: Fix nullPointer
         c.addAccount(new Account(insertAmount, c));
         System.out.println("Nytt konto skapat");
@@ -97,16 +96,16 @@ public class Bank {
         double interest = getDouble("Ange lånets räntesats: ");
         
         
-        Customer c = getCustomer(customerName, customerPersonalNumber);
+        Customer c = getCustomer(customerPersonalNumber);
         Employee e = getEmployee(employeePersonalNumber);
         Loan loan = new Loan(loanAmount, c, e, interest);
         assert c != null;
         c.addLoan(loan);
-        System.out.println("Lån på " + c.getLoan().getDebt() + " skapat till " + c.getName());
+        System.out.println("Lån på " + c.getLatestLoan().getDebt() + " skapat till " + c.getName());
         welcomeMenu();
     }
     
-    public static void handleLoan() {
+    public static void handleLoanMenu() {
         String input;
         System.out.println("Vad vill du göra?\n" +
                 "1. Ändra räntan på lån\n" +
@@ -123,14 +122,13 @@ public class Bank {
             case "4" -> welcomeMenu();
             default -> System.out.println("Ange ett giltigt val! (1-3)");
         }
-        handleLoan();
+        handleLoanMenu();
     }
     
     /**
      * Method that changes the value of the loan rate
      */
     public static void changeInterestRateOnLoan() {
-        String name = getString("Mata in lånetagarens namn: ");
         String perNum = getString("Mata in lånepersonnummer: ");
         String loanId = getString("Mata in lånId: ");
         String employeeId = getString("Mata in anställdast persnummer: ");
@@ -139,7 +137,7 @@ public class Bank {
         
         newInterestRate = Integer.parseInt(newInterestString);
         Employee e = getEmployee(employeeId);
-        Customer c = getCustomer(name, perNum);
+        Customer c = getCustomer(perNum);
         if (c != null) {
             Loan l = searchForLoanInListOfLoan(c, loanId);
             if (l == null) {
@@ -157,13 +155,12 @@ public class Bank {
      */
     public static void printListOfRateChanges() {
         String loan = getString("Mata in lånID: ");
-        String customer = getString("Mata in lånetagare: ");
         String personalNumber = getString("Mata in lånetagarens personnummer: ");
         
-        Customer c = getCustomer(customer, personalNumber);
+        Customer customer = getCustomer(personalNumber);
         
-        if (c != null) {
-            Loan l = searchForLoanInListOfLoan(c, loan);
+        if (customer != null) {
+            Loan l = searchForLoanInListOfLoan(customer, loan);
             if (l == null) {
                 System.out.println("Finns inget lån med det ID");
             } else {
@@ -183,7 +180,7 @@ public class Bank {
         String customerName = getString("Mata in kundens namn: ");
         String customerNumber = getString("Mata in personnummer: ");
         
-        Customer c = getCustomer(customerName, customerNumber);
+        Customer c = getCustomer(customerNumber);
         assert c != null;
         System.out.println(c.getName() + " har totalt " + c.getLoanList().size() + " lån hos banken");
         for (int i = 0; i < c.getLoanList().size(); i++) {
@@ -194,7 +191,7 @@ public class Bank {
                             "\nAnsvarig på banken: " + c.getLoanList().get(i).getManager().getName());
         }
         System.out.println();
-        handleLoan();
+        handleLoanMenu();
     }
     
     public static void exitMenu() {
@@ -208,13 +205,35 @@ public class Bank {
         }
     }
     
-    public static Customer getCustomer(String name, String personalNumber) {
+    public static Customer findCustomer() {
+        Customer customer = null;
+        while (customer == null) {
+            customer = getCustomer(getString("Ange ditt personnummer: "));
+            if (customer == null) {
+                System.out.println("Ogiltigt personnummer! ");
+            }
+        }
+        return customer;
+    }
+    
+    public static Customer getCustomer(String personalNumber) {
         for (var c : customerList) {
-            if (c.getName().equalsIgnoreCase(name.trim()) && c.getPersonalId().equalsIgnoreCase(personalNumber.trim())) {
+            if (c.getPersonalId().equalsIgnoreCase(personalNumber.trim())) {
                 return c;
             }
         }
         return null;
+    }
+    
+    public static Employee findEmployee() {
+        Employee employee = null;
+        while (employee == null) {
+            employee = getEmployee(getString("Ange ditt personnummer: "));
+            if (employee == null) {
+                System.out.println("Ogiltigt personnummer! ");
+            }
+        }
+        return employee;
     }
     
     public static Employee getEmployee(String personalNumber) {
