@@ -82,6 +82,7 @@ public class Bank {
     
     private static void accountMenu() {
         String input;
+        Customer customer = findCustomer();
         while (true) {
             println("\nVälj vad du vill göra:\n" +
                     "1. Öppna nytt konto\n" +
@@ -90,72 +91,21 @@ public class Bank {
                     "4. Saldo\n" +
                     "5. Ändra ränta\n" +
                     "6. Visa alla konton\n" +
-                    "7. Återgå till huvudmenyn");
+                    "7. Ändra kund\n" +
+                    "8. Återgå till huvudmenyn");
             input = in.nextLine();
             
             switch (input) {
-                case "1" -> createAccount();
-                case "2" -> accountDeposit();
-                case "3" -> accountWithdraw();
-                case "4" -> viewAccountBalance();
-                case "5" -> changeAccountInterestRate();
-                case "6" -> viewAllAccounts();
-                case "7" -> {return;}
+                case "1" -> customer.createAccount();
+                case "2" -> customer.accountDeposit();
+                case "3" -> customer.accountWithdraw();
+                case "4" -> customer.viewAccountBalance();
+                case "5" -> customer.changeAccountInterestRate();
+                case "6" -> customer.viewAllAccounts();
+                case "7" -> customer = findCustomer();
+                case "8" -> {return;}
                 default -> println("Ange ett giltigt val! (1-7)");
             }
-        }
-    }
-    
-    public static void createAccount() {
-        Customer customer = findCustomer();
-        Employee employee = findEmployee();
-        double depositAmount = getDouble("Ange belopp att sätta in: ");
-        customer.addAccount(depositAmount, employee);
-        println("Nytt konto skapat med " + customer.getAccountList().get(customer.getAccountList().size() - 1).getAccountBalance());
-    }
-    
-    public static void accountDeposit() {
-        
-        
-        Customer customer = findCustomer();
-        Account account = customer.findAccount();
-        double changeBalance = getDouble("Ange belopp du vill ta sätta in: ");
-        account.changeBalance(changeBalance);
-        println("Kontobalans är nu " + account.getAccountBalance());
-    }
-    
-    public static void accountWithdraw() {
-        
-        Customer customer = findCustomer();
-        Account account = customer.findAccount();
-        double changeBalance = -1 * getDouble("Ange belopp du vill ta ut: ");
-        try {
-            account.changeBalance(changeBalance);
-        } catch (IllegalArgumentException e) {
-            println(e.getMessage());
-        }
-        println("Kontobalans är nu " + account.getAccountBalance());
-    }
-    
-    public static void viewAccountBalance() {
-        Customer customer = findCustomer();
-        Account account = customer.findAccount();
-        println("Saldo: " + account.getAccountBalance());
-    }
-    
-    public static void changeAccountInterestRate() {
-        
-        Customer customer = findCustomer();
-        Account account = customer.findAccount();
-        Employee employee = findEmployee();
-        double changeInterest = getDouble("Ange den nya räntan: ");
-        account.changeInterestRate(employee, changeInterest);
-    }
-    
-    public static void viewAllAccounts() {
-        Customer customer = findCustomer();
-        for (Account account : customer.getAccountList()) {
-            println("" + account);
         }
     }
     
@@ -252,7 +202,7 @@ public class Bank {
     }
     
     public static boolean exitMenu() {
-        String input = getString("Är du säker på att du vill avsluta? (j/n)");
+        String input = getString("Är du säker på att du vill avsluta? (j/n) ");
         if (input.equalsIgnoreCase("j")) {
             println("Tack för besöket! Välkommen åter!");
             return false;
