@@ -36,13 +36,13 @@ public class Bank {
     
     public static void welcomeMenu() {
         String input;
-        System.out.println("\nVälj vad du vill göra:\n" +
+        println("\nVälj vad du vill göra:\n" +
                 "1. Lägg till ny kund\n" +
                 "2. Anställ någon\n" +
                 "3. Konto\n" +
                 "4. Lån\n" +
                 "5. Avsluta");
-        
+    
         input = in.nextLine();
         
         switch (input) {
@@ -51,7 +51,7 @@ public class Bank {
             case "3" -> accountMenu();
             case "4" -> loanMenu();
             case "5" -> exitMenu();
-            default -> System.out.println("Ange ett giltigt val! (1-5)");
+            default -> println("Ange ett giltigt val! (1-5)");
         }
         welcomeMenu();
     }
@@ -63,7 +63,7 @@ public class Bank {
             // TODO: 01-Oct-20 Reverse logic
             try {
                 getCustomer(personalNumber);
-                System.out.println("Kunden finns redan! ");
+                println("Kunden finns redan! ");
             } catch (CustomerNotFoundException e) {
                 customerList.add(new Customer(name, personalNumber));
                 break;
@@ -79,13 +79,13 @@ public class Bank {
         double salary = getDouble("Mata in den anställdas lön: ");
         
         employeeList.add(new Employee(name, personalNumber, salary));
-        System.out.println("Ny anställd skapad");
-        
+        println("Ny anställd skapad");
+    
     }
 
     private static void accountMenu(){
         String input;
-        System.out.println("\nVälj vad du vill göra:\n" +
+        println("\nVälj vad du vill göra:\n" +
                 "1. Öppna nytt konto\n" +
                 "2. Gör insättning\n" +
                 "3. Gör uttag\n" +
@@ -102,7 +102,7 @@ public class Bank {
             case "5" -> changeAccountInterestRate();
             case "6" -> welcomeMenu();
             //TODO lägg till ett val för att se alla konton en Customer har
-            default -> System.out.println("Ange ett giltigt val! (1-5)");
+            default -> println("Ange ett giltigt val! (1-5)");
         }
         accountMenu();
     }
@@ -137,7 +137,7 @@ public class Bank {
             Customer c = findCustomer();
             String accountId = getString("Mata in konto Id: ");
             Account account = Customer.getAccount(c, accountId );
-            System.out.println("Saldo: " + account.getAccountBalance());
+            println("Saldo: " + account.getAccountBalance());
         }
 
         public static void changeAccountInterestRate(){
@@ -152,13 +152,13 @@ public class Bank {
     public static void loanMenu(){
 
         String input;
-        System.out.println("\nVälj vad du vill göra:\n" +
+        println("\nVälj vad du vill göra:\n" +
                 "1. Ansök om nytt lån\n" +
                 "2. Ändra räntan på ett befintligt lån lån\n" +
                 "3. Skriva ut lista med ändringar för ett lån\n" +
                 "4. Skriva ut lista för kundens alla lån\n" +
                 "5. Gå till huvudmenyn");
-
+    
         input = in.nextLine();
 
         switch (input) {
@@ -167,7 +167,7 @@ public class Bank {
             case "3" -> printListOfRateChanges();
             case "4" -> allLoansForACustomer();
             case "5" -> welcomeMenu();
-            default -> System.out.println("Ange ett giltigt val! (1-5)");
+            default -> println("Ange ett giltigt val! (1-5)");
         }
         loanMenu();
     }
@@ -182,7 +182,7 @@ public class Bank {
         
         Loan loan = new Loan(loanAmount, customer, employee, interest);
         customer.addLoan(loan);
-        System.out.println("Lån på " + customer.getLatestLoan().getDebt() + " skapat till " + customer.getName());
+        println("Lån på " + customer.getLatestLoan().getDebt() + " skapat till " + customer.getName());
         welcomeMenu();
     }
 
@@ -198,12 +198,12 @@ public class Bank {
         Customer customer = findCustomer();
         Loan loan = searchForLoanInListOfLoan(customer, loanId);
         if (loan == null) {
-            System.out.println("Finns inget lån med det ID");
+            println("Finns inget lån med det ID");
         } else {
             loan.updateInterestRate(newInterestRate, employee);
         }
         
-        System.out.println("\nRäntan är ändrad till " + newInterestRate + "% för lån " + loanId + "\n");
+        println("\nRäntan är ändrad till " + newInterestRate + "% för lån " + loanId + "\n");
         
     }
     
@@ -216,10 +216,10 @@ public class Bank {
         
         Loan loan = searchForLoanInListOfLoan(customer, loanId);
         if (loan == null) {
-            System.out.println("Finns inget lån med det ID");
+            println("Finns inget lån med det ID");
         } else {
             for (int i = 0; i < loan.getLoanHistory().size(); i++) {
-                System.out.print(loan.getLoanHistory().get(i).getListOfChanges() + "\n");
+                print(loan.getLoanHistory().get(i).getListOfChanges() + "\n");
             }
         }
         
@@ -230,26 +230,26 @@ public class Bank {
      */
     public static void allLoansForACustomer() {
         Customer customer = findCustomer();
-        System.out.println(customer.getName() + " har totalt " + customer.getLoanList().size() + " lån hos banken");
+        println(customer.getName() + " har totalt " + customer.getLoanList().size() + " lån hos banken");
         for (int i = 0; i < customer.getLoanList().size(); i++) {
             Loan currentLoan = customer.getLoanList().get(i);
-            System.out.println(
+            println(
                     "\nLån: " + currentLoan.getLoanID() +
                             "\nTotal skuld: " + currentLoan.getDebt() +
                             "\nRänta på lån: " + currentLoan.getInterestRate() +
-                            "\nAnsvarig på banken: " + currentLoan.getManager().getName());
+                            "\nAnsvarig på banken: " + currentLoan.getManager().getName() +
+                            "\n");
         }
-        System.out.println();
         loanMenu();
     }
     
     public static void exitMenu() {
         String input = getString("Är du säker på att du vill avsluta? (j/n)");
         if (input.equalsIgnoreCase("j")) {
-            System.out.println("Tack för besöket! Välkommen åter!");
+            println("Tack för besöket! Välkommen åter!");
             System.exit(0);
         } else {
-            System.out.println("Stanna så länge du vill!");
+            println("Stanna så länge du vill!");
             welcomeMenu();
         }
     }
@@ -259,7 +259,7 @@ public class Bank {
             try {
                 return getCustomer(getString("Ange kundens personnummer: "));
             } catch (CustomerNotFoundException e) {
-                System.out.println(e.getMessage());
+                println(e.getMessage());
             }
         }
     }
@@ -278,7 +278,7 @@ public class Bank {
             try {
                 return getEmployee(getString("Ange ditt personnummer: "));
             } catch (EmployeeNotFoundException e) {
-                System.out.println(e.getMessage());
+                println(e.getMessage());
             }
         }
        
@@ -294,10 +294,18 @@ public class Bank {
     }
     
     
+    private static void print(String output) {
+        System.out.print(output);
+    }
+    
+    public static void println(String output) {
+        System.out.println(output);
+    }
+    
     private static String getString(String question) {
         String response = null;
         while (response == null || response.isEmpty()) {
-            System.out.print(question);
+            print(question);
             response = in.nextLine();
         }
         return response;
@@ -306,10 +314,10 @@ public class Bank {
     private static double getDouble(String question) {
         while (true) {
             try {
-                System.out.print(question);
+                print(question);
                 return Double.parseDouble(in.nextLine().replace(',', '.'));
             } catch (NumberFormatException e) {
-                System.out.println("Ogiltigt värde! ");
+                println("Ogiltigt värde! ");
             }
         }
     }
@@ -317,10 +325,10 @@ public class Bank {
     private static int getInt(String question) {
         while (true) {
             try {
-                System.out.print(question);
+                print(question);
                 return Integer.parseInt(in.nextLine());
             } catch (NumberFormatException e) {
-                System.out.println("Ogiltigt värde! ");
+                println("Ogiltigt värde! ");
             }
         }
     }
