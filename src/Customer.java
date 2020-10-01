@@ -20,7 +20,7 @@ public class Customer extends Person {
         loanList.add(loan);
     }
 
-    public Loan getLoan(){
+    public Loan getLatestLoan(){
         return loanList.get(loanList.size()-1);
     }
 }
