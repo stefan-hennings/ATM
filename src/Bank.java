@@ -15,16 +15,11 @@ public class Bank {
         Employee julia = new Employee("Julia", "x", 25000);
         employeeList.add(stefan);
         employeeList.add(julia);
-        
-        Loan loan1 = new Loan(25000, oscar, stefan, 2, 1);
-        Loan loan2 = new Loan(35000, oscar, stefan, 3, 2);
-        Loan loan3 = new Loan(10000, patrik, julia, 2, 1);
-        Loan loan4 = new Loan(15000, patrik, julia, 4, 2);
-        
-        oscar.addLoan(loan1);
-        oscar.addLoan(loan2);
-        patrik.addLoan(loan3);
-        patrik.addLoan(loan4);
+
+        oscar.grantLoan(25000, stefan, 2);
+        oscar.grantLoan(35000, stefan, 3);
+        patrik.grantLoan(10000, julia, 2);
+        patrik.grantLoan(15000, julia, 4);
 
         oscar.addAccount(new Account(30000, oscar, "1"));
         patrik.addAccount(new Account(100000, patrik, "1"));
@@ -176,8 +171,7 @@ public class Bank {
         double loanAmount = getDouble("Ange lånets storlek: ");
         double interest = getDouble("Ange lånets räntesats: ");
         
-        Loan loan = new Loan(loanAmount, customer, employee, interest);
-        customer.addLoan(loan);
+        customer.grantLoan(loanAmount, employee, interest);
         println("Lån på " + customer.getLatestLoan().getDebt() + " skapat till " + customer.getName());
         welcomeMenu();
     }

@@ -44,8 +44,11 @@ public class Customer extends Person {
     public Loan getLatestLoan(){
         return loanList.get(loanList.size()-1);
     }
-
-
+    
+    public void grantLoan(double loanAmount, Employee employee, double interestRate){
+        loanList.add(new Loan(loanAmount, employee, interestRate, loanList.size()+1));
+    }
+    
     public List<Loan> getLoanList(){
         return loanList;
     }
