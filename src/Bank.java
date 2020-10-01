@@ -138,23 +138,19 @@ public class Bank {
      * Method that changes the value of the loan rate
      */
     public static void changeInterestRateOnLoan() {
-        String perNum = getString("Mata in lånepersonnummer: ");
         String loanId = getString("Mata in lånId: ");
-        String employeeId = getString("Mata in anställdast persnummer: ");
         String newInterestString = getString("Mata in nya räntan: ");
-        int newInterestRate;
         
-        newInterestRate = Integer.parseInt(newInterestString);
-        Employee e = getEmployee(employeeId);
-        Customer c = getCustomer(perNum);
-        if (c != null) {
-            Loan l = searchForLoanInListOfLoan(c, loanId);
-            if (l == null) {
-                System.out.println("Finns inget lån med det ID");
-            } else {
-                l.updateInterestRate(newInterestRate, e);
-            }
+        int newInterestRate = Integer.parseInt(newInterestString);
+        Employee employee = findEmployee();
+        Customer customer = findCustomer();
+        Loan loan = searchForLoanInListOfLoan(customer, loanId);
+        if (loan == null) {
+            System.out.println("Finns inget lån med det ID");
+        } else {
+            loan.updateInterestRate(newInterestRate, employee);
         }
+        
         System.out.println("\nRäntan är ändrad till " + newInterestString + "% för lån " + loanId + "\n");
         
     }
@@ -163,41 +159,33 @@ public class Bank {
      * Writes a list of the history of changes to a loan
      */
     public static void printListOfRateChanges() {
-        String loan = getString("Mata in lånID: ");
-        String personalNumber = getString("Mata in lånetagarens personnummer: ");
+        String loanId = getString("Mata in lånID: ");
+        Customer customer = findCustomer();
         
-        Customer customer = getCustomer(personalNumber);
-        
-        if (customer != null) {
-            Loan l = searchForLoanInListOfLoan(customer, loan);
-            if (l == null) {
-                System.out.println("Finns inget lån med det ID");
-            } else {
-                for (int i = 0; i < l.getLoanHistory().size(); i++) {
-                    System.out.print(l.getLoanHistory().get(i).getListOfChanges() + "\n");
-                }
-                
+        Loan loan = searchForLoanInListOfLoan(customer, loanId);
+        if (loan == null) {
+            System.out.println("Finns inget lån med det ID");
+        } else {
+            for (int i = 0; i < loan.getLoanHistory().size(); i++) {
+                System.out.print(loan.getLoanHistory().get(i).getListOfChanges() + "\n");
             }
         }
-        
     }
     
     /**
      * Writes a list of all loans for a customer
      */
     public static void allLoansForACustomer() {
-        String customerName = getString("Mata in kundens namn: ");
-        String customerNumber = getString("Mata in personnummer: ");
+        String customerPersonalNumber = getString("Mata in personnummer: ");
         
-        Customer c = getCustomer(customerNumber);
-        assert c != null;
-        System.out.println(c.getName() + " har totalt " + c.getLoanList().size() + " lån hos banken");
-        for (int i = 0; i < c.getLoanList().size(); i++) {
+        Customer customer = getCustomer(customerPersonalNumber);
+        System.out.println(customer.getName() + " har totalt " + customer.getLoanList().size() + " lån hos banken");
+        for (int i = 0; i < customer.getLoanList().size(); i++) {
             System.out.println(
-                    "\nLån: " + c.getLoanList().get(i).getLoanID() +
-                            "\nTotal skuld: " + c.getLoanList().get(i).getDebt() +
-                            "\nRänta på lån: " + c.getLoanList().get(i).getInterestRate() +
-                            "\nAnsvarig på banken: " + c.getLoanList().get(i).getManager().getName());
+                    "\nLån: " + customer.getLoanList().get(i).getLoanID() +
+                            "\nTotal skuld: " + customer.getLoanList().get(i).getDebt() +
+                            "\nRänta på lån: " + customer.getLoanList().get(i).getInterestRate() +
+                            "\nAnsvarig på banken: " + customer.getLoanList().get(i).getManager().getName());
         }
         System.out.println();
         handleLoanMenu();
@@ -268,6 +256,17 @@ public class Bank {
             try {
                 System.out.print(question);
                 return Double.parseDouble(in.nextLine().replace(',', '.'));
+            } catch (NumberFormatException e) {
+                System.out.println("Ogiltigt värde! ");
+            }
+        }
+    }
+    
+    private static int getInt(String question) {
+        while (true) {
+            try {
+                System.out.print(question);
+                return Integer.parseInt(in.nextLine());
             } catch (NumberFormatException e) {
                 System.out.println("Ogiltigt värde! ");
             }
