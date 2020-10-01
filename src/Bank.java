@@ -174,6 +174,27 @@ public class Bank {
 
     }
 
+    /**
+     * Writes a list of all loans for a customer
+     */
+    public static void allLoansForACustomer(){
+        String customerName = getString("Mata in kundens namn: ");
+        String customerNumber = getString("Mata in personnummer: ");
+
+        Customer c = getCustomer(customerName,customerNumber);
+        assert c != null;
+        System.out.println(c.getName() + " har totalt " + c.getLoanList().size() + " lån hos banken");
+        for (int i = 0; i < c.getLoanList().size(); i++) {
+            System.out.println(
+                    "\nLån: " + c.getLoanList().get(i).getLoanID() +
+                            "\nTotal skuld: " + c.getLoanList().get(i).getDebt() +
+                            "\nRänta på lån: " + c.getLoanList().get(i).getInterestRate() +
+                            "\nAnsvarig på banken: " + c.getLoanList().get(i).getManager().getName());
+        }
+        System.out.println();
+        handleLoan();
+    }
+
     public static void exitMenu(){
         String input = getString("Är du säker på att du vill avsluta? (j/n)");
         if(input.equalsIgnoreCase("j")){
@@ -238,22 +259,6 @@ public class Bank {
 
     }
 
-    public static void allLoansForACustomer(){
-        String customerName = getString("Mata in kundens namn: ");
-        String customerNumber = getString("Mata in personnummer: ");
 
-        Customer c = getCustomer(customerName,customerNumber);
-        assert c != null;
-        System.out.println(c.getName() + " har totalt " + c.getLoanList().size() + " lån hos banken");
-        for (int i = 0; i < c.getLoanList().size(); i++) {
-            System.out.println(
-                    "\nLån: " + c.getLoanList().get(i).getLoanID() +
-                    "\nTotal skuld: " + c.getLoanList().get(i).getDebt() +
-                    "\nRänta på lån: " + c.getLoanList().get(i).getInterestRate() +
-                    "\nAnsvarig på banken: " + c.getLoanList().get(i).getManager().getName());
-        }
-        System.out.println();
-        handleLoan();
-    }
 
 }
