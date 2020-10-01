@@ -55,13 +55,19 @@ public class Bank {
         welcomeMenu();
     }
     
-    public static void createCustomer() { //TODO: Felhantering, inga duplicates.
-        
-        String name = getString("Mata in kundens namn: ");
-        
-        String personalNumber = getString("Mata in kundens personnummer: ");
-        customerList.add(new Customer(name, personalNumber));
-        System.out.println("Ny kund skapad");
+    public static void createCustomer() {
+        while (true) {
+            String name = getString("Mata in kundens namn: ");
+            String personalNumber = getString("Mata in kundens personnummer: ");
+            // TODO: 01-Oct-20 Reverse logic
+            try {
+                getCustomer(personalNumber);
+                System.out.println("Kunden finns redan! ");
+            } catch (CustomerNotFoundException e) {
+                customerList.add(new Customer(name, personalNumber));
+                break;
+            }
+        }
         
     }
     
@@ -77,14 +83,17 @@ public class Bank {
     }
     
     public static void createAccount() {
-        String customerPersonalNumber = getString("Ange kundens personnummer: ");
-        
+        Customer customer;
+        while (true) {
+            try {
+                customer = getCustomer(getString("Ange kundens personnummer: "));
+                break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
         double insertAmount = getDouble("Ange belopp att sätta in: ");
-        
-        Customer c = getCustomer(customerPersonalNumber);
-        //TODO: Fix nullPointer
-        c.addAccount(new Account(insertAmount, c));
-        System.out.println("Nytt konto skapat");
+        customer.addAccount(new Account(insertAmount, customer));
     }
     
     public static void createLoan() {
@@ -217,12 +226,12 @@ public class Bank {
     }
     
     public static Customer getCustomer(String personalNumber) {
-        for (var c : customerList) {
-            if (c.getPersonalId().equalsIgnoreCase(personalNumber.trim())) {
-                return c;
+        for (Customer customer : customerList) {
+            if (customer.getPersonalId().equalsIgnoreCase(personalNumber)) {
+                return customer;
             }
         }
-        return null;
+        throw new CustomerNotFoundException("Det finns ingen kund med det personnummret. ");
     }
     
     public static Employee findEmployee() {
