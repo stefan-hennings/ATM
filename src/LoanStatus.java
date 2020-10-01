@@ -2,8 +2,8 @@ import java.time.*;
 
 public class LoanStatus {
     private final Employee manager;
-    private double interestRate;
-    private LocalDate startDate;
+    private final double interestRate;
+    private final LocalDate startDate;
     private String listOfChanges;
     
     public LoanStatus(Employee manager, double interestRate) {
@@ -20,17 +20,18 @@ public class LoanStatus {
     public double getInterestRate() {
         return interestRate;
     }
-
+    
+    // TODO: 01-Oct-20 Do we want to be able to call up a specific change? As it stands, we can only view all or none 
     public String getListOfChanges() {
         return listOfChanges;
     }
-
+    
     public String setListOfChanges() {
         return listOfChanges =
                 "\nAnställd som bevilja: " + manager.getName() +
                 "\nNy ränta: " + interestRate +
                 "\nDatum för ändring: " + startDate;
     }
-
+    
 
 }

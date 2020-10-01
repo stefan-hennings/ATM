@@ -4,28 +4,17 @@ import java.util.Random;
 
 
 public class Customer extends Person {
-    private List<Account> accountList = new ArrayList<>();
-    private List<Loan> loanList = new ArrayList<>();
-    private String customerId;
+    private final List<Account> accountList = new ArrayList<>();
+    private final List<Loan> loanList = new ArrayList<>();
+    private final String customerId;
     
     public Customer(String name, String personalId) {
         super(name, personalId);
         this.customerId = makeRandomCustomerId();
     }
-    //så man kan hårdkoda in customerID för vi ej har databas att spara de i än.
-    public Customer(String name, String personalId, String customerId) {
-        super(name, personalId);
-        this.customerId = customerId;
-    }
-
     
     public void addAccount(double accountBalance) {
         accountList.add(new Account(accountBalance, accountList.size()+1));
-    }
-    
-    public void addLoan(Loan loan) {
-        loanList.add(loan);
-        loan.setLoanID(loanList.size());
     }
 
     /**

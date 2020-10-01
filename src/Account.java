@@ -1,5 +1,5 @@
 public class Account {
-    private int accountNumber;
+    private final int accountNumber;
     private double accountBalance;
     private double interestRate = 0;
 //    Customer customer;
