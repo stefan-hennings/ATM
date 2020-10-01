@@ -2,20 +2,15 @@ import java.time.*;
 
 public class LoanStatus {
     private final Employee manager;
-    private final double interestRate;
-    protected LocalDate startDate;
-
-    public LoanStatus(Employee manager) {
-        this.manager = manager;
-        this.interestRate = 3;
-        startDate = LocalDate.now();
-
-    }
+    private double interestRate;
+    private LocalDate startDate;
+    private String listOfChanges;
     
     public LoanStatus(Employee manager, double interestRate) {
         this.manager = manager;
         this.interestRate = interestRate;
-        startDate = LocalDate.now();
+        this.startDate = LocalDate.now();
+        this.listOfChanges = setListOfChanges();
     }
     
     public Employee getManager() {
@@ -25,4 +20,17 @@ public class LoanStatus {
     public double getInterestRate() {
         return interestRate;
     }
+
+    public String getListOfChanges() {
+        return listOfChanges;
+    }
+
+    public String setListOfChanges() {
+        return listOfChanges =
+                "\nAnställd som bevilja: " + manager.getName() +
+                "\nNy ränta: " + interestRate +
+                "\nDatum för ändring: " + startDate;
+    }
+
+
 }
