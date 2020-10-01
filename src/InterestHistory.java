@@ -1,12 +1,12 @@
 import java.time.*;
 
-public class LoanStatus {
+public class InterestHistory {
     private final Employee manager;
     private final double interestRate;
     private final LocalDate startDate;
     private String listOfChanges;
     
-    public LoanStatus(Employee manager, double interestRate) {
+    public InterestHistory(Employee manager, double interestRate) {
         this.manager = manager;
         this.interestRate = interestRate;
         this.startDate = LocalDate.now();

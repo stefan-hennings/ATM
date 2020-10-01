@@ -145,8 +145,9 @@ public class Bank {
         
         Customer customer = findCustomer();
         Account account = customer.findAccount();
+        Employee employee = findEmployee();
         double changeInterest = getDouble("Ange den nya räntan: ");
-        account.changeInterestRate(changeInterest);
+        account.changeInterestRate(employee, changeInterest);
     }
     
     public static void loanMenu() {

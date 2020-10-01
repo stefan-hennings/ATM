@@ -4,12 +4,12 @@ import java.util.List;
 public class Loan {
     private final int loanID;
     private double debt;
-    private final List<LoanStatus> loanHistory = new ArrayList<>();
+    private final List<InterestHistory> loanHistory = new ArrayList<>();
 
     public Loan(double debt, Employee manager, double interestRate, int loanID) {
         this.debt = debt;
         this.loanID = loanID;
-        loanHistory.add(new LoanStatus(manager, interestRate));
+        loanHistory.add(new InterestHistory(manager, interestRate));
     }
 
     public int getLoanID() {
@@ -25,7 +25,7 @@ public class Loan {
     }
     
     public void updateInterestRate(double interestRate, Employee manager) {
-        loanHistory.add(new LoanStatus(manager, interestRate));
+        loanHistory.add(new InterestHistory(manager, interestRate));
     }
     
     public double getInterestRate() {
@@ -36,7 +36,7 @@ public class Loan {
         return loanHistory.get(loanHistory.size()-1).getManager();
     }
 
-    public List<LoanStatus> getLoanHistory() {
+    public List<InterestHistory> getLoanHistory() {
         return loanHistory;
     }
 

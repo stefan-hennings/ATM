@@ -1,12 +1,17 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Account {
     private final int accountNumber;
     private double accountBalance;
-    private double interestRate = 0;
+    private final List<InterestHistory> accountHistory = new ArrayList<>();
+
 //    Customer customer;
     
     public Account(double accountBalance, int accountNumber) {
         this.accountBalance = accountBalance;
         this.accountNumber = accountNumber;
+        accountHistory.add(new InterestHistory(null, 0));
     }
     
     public void changeBalance(double change) {
@@ -16,8 +21,8 @@ public class Account {
             throw new IllegalArgumentException("Ansök om lån!");
         }
     }
-    public void changeInterestRate(double newInterest){
-        interestRate = newInterest;
+    public void changeInterestRate(Employee employee, double newInterest){
+        accountHistory.add(new InterestHistory(employee, newInterest));
     }
 
     public int getAccountNumber() {
