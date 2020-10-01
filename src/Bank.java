@@ -54,6 +54,7 @@ public class Bank {
         }
         welcomeMenu();
     }
+
     public static void createCustomer() { //TODO: Felhantering, inga duplicates.
 
         String name = getString("Mata in kundens namn: ");
@@ -97,7 +98,7 @@ public class Bank {
 
         Customer c = getCustomer(customerName, customerPersonalNumber);
         Employee e = getEmployee(employeePersonalNumber);
-        Loan loan = new Loan(loanAmount, c, e, interest );
+        Loan loan = new Loan(loanAmount, c, e, interest);
         assert c != null;
         c.addLoan(loan);
         System.out.println("Lån på " + c.getLoan().getDebt() +" skapat till " + c.getName());
@@ -109,14 +110,16 @@ public class Bank {
         System.out.println("Vad vill du göra?\n" +
                 "1. Ändra räntan på lån\n" +
                 "2. Skriva ut lista med ändringar för ett lån\n" +
-                "3. Gå till huvudmenyn");
+                "3. Skriva ut lista för kundens alla lån\n" +
+                "4. Gå till huvudmenyn");
 
         input = in.nextLine();
 
         switch (input){
             case "1" -> changeInterestRateOnLoan();
             case "2" -> printListOfRateChanges();
-            case "3" -> welcomeMenu();
+            case "3" -> allLoansForACustomer();
+            case "4" -> welcomeMenu();
             default -> System.out.println("Ange ett giltigt val! (1-3)");
         }
         handleLoan();
@@ -235,5 +238,22 @@ public class Bank {
 
     }
 
+    public static void allLoansForACustomer(){
+        String customerName = getString("Mata in kundens namn: ");
+        String customerNumber = getString("Mata in personnummer: ");
+
+        Customer c = getCustomer(customerName,customerNumber);
+        assert c != null;
+        System.out.println(c.getName() + " har totalt " + c.getLoanList().size() + " lån hos banken");
+        for (int i = 0; i < c.getLoanList().size(); i++) {
+            System.out.println(
+                    "\nLån: " + c.getLoanList().get(i).getLoanID() +
+                    "\nTotal skuld: " + c.getLoanList().get(i).getDebt() +
+                    "\nRänta på lån: " + c.getLoanList().get(i).getInterestRate() +
+                    "\nAnsvarig på banken: " + c.getLoanList().get(i).getManager().getName());
+        }
+        System.out.println();
+        handleLoan();
+    }
 
 }
