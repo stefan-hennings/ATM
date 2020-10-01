@@ -83,34 +83,20 @@ public class Bank {
     }
     
     public static void createAccount() {
-        Customer customer;
-        while (true) {
-            try {
-                customer = getCustomer(getString("Ange kundens personnummer: "));
-                break;
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
+        Customer customer = findCustomer();
         double insertAmount = getDouble("Ange belopp att sätta in: ");
         customer.addAccount(new Account(insertAmount, customer));
     }
     
     public static void createLoan() {
         String employeePersonalNumber = getString("Ange ditt personnummer: ");
-        String customerName = getString("Ange kundens namn: ");
-        String customerPersonalNumber = getString("Ange kundens personnummer: ");
-        
         double loanAmount = getDouble("Ange lånets storlek: ");
         double interest = getDouble("Ange lånets räntesats: ");
-        
-        
-        Customer c = getCustomer(customerPersonalNumber);
+        Customer customer = findCustomer();
         Employee e = getEmployee(employeePersonalNumber);
-        Loan loan = new Loan(loanAmount, c, e, interest);
-        assert c != null;
-        c.addLoan(loan);
-        System.out.println("Lån på " + c.getLatestLoan().getDebt() + " skapat till " + c.getName());
+        Loan loan = new Loan(loanAmount, customer, e, interest);
+        customer.addLoan(loan);
+        System.out.println("Lån på " + customer.getLatestLoan().getDebt() + " skapat till " + customer.getName());
         welcomeMenu();
     }
     
@@ -139,9 +125,8 @@ public class Bank {
      */
     public static void changeInterestRateOnLoan() {
         String loanId = getString("Mata in lånId: ");
-        String newInterestString = getString("Mata in nya räntan: ");
         
-        int newInterestRate = Integer.parseInt(newInterestString);
+        double newInterestRate = getDouble("Mata in nya räntan: ");
         Employee employee = findEmployee();
         Customer customer = findCustomer();
         Loan loan = searchForLoanInListOfLoan(customer, loanId);
@@ -151,7 +136,7 @@ public class Bank {
             loan.updateInterestRate(newInterestRate, employee);
         }
         
-        System.out.println("\nRäntan är ändrad till " + newInterestString + "% för lån " + loanId + "\n");
+        System.out.println("\nRäntan är ändrad till " + newInterestRate + "% för lån " + loanId + "\n");
         
     }
     
@@ -176,16 +161,15 @@ public class Bank {
      * Writes a list of all loans for a customer
      */
     public static void allLoansForACustomer() {
-        String customerPersonalNumber = getString("Mata in personnummer: ");
-        
-        Customer customer = getCustomer(customerPersonalNumber);
+        Customer customer = findCustomer();
         System.out.println(customer.getName() + " har totalt " + customer.getLoanList().size() + " lån hos banken");
         for (int i = 0; i < customer.getLoanList().size(); i++) {
+            Loan currentLoan = customer.getLoanList().get(i);
             System.out.println(
-                    "\nLån: " + customer.getLoanList().get(i).getLoanID() +
-                            "\nTotal skuld: " + customer.getLoanList().get(i).getDebt() +
-                            "\nRänta på lån: " + customer.getLoanList().get(i).getInterestRate() +
-                            "\nAnsvarig på banken: " + customer.getLoanList().get(i).getManager().getName());
+                    "\nLån: " + currentLoan.getLoanID() +
+                            "\nTotal skuld: " + currentLoan.getDebt() +
+                            "\nRänta på lån: " + currentLoan.getInterestRate() +
+                            "\nAnsvarig på banken: " + currentLoan.getManager().getName());
         }
         System.out.println();
         handleLoanMenu();
@@ -251,7 +235,7 @@ public class Bank {
         return response;
     }
     
-    private static Double getDouble(String question) {
+    private static double getDouble(String question) {
         while (true) {
             try {
                 System.out.print(question);
