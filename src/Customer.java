@@ -13,10 +13,84 @@ public class Customer extends Person {
         this.customerId = makeRandomCustomerId();
     }
     
+    public void createLoan() {
+        double loanAmount = Bank.getDouble("Ange lånets storlek: ");
+        double interest = Bank.getDouble("Ange lånets räntesats: ");
+        
+        grantLoan(loanAmount, Bank.employee, interest);
+        Bank.println("Lån på " + getLatestLoan().getDebt() + " skapat till " + getName());
+    }
+    
+    /**
+     * Method that changes the value of the loan rate
+     */
+    public void changeInterestRateOnLoan() {
+        int loanId = Bank.getInt("Mata in lånId: ");
+        
+        double newInterestRate = Bank.getDouble("Mata in nya räntan: ");
+        Loan loan = getLoanFromList(loanId);
+        if (loan == null) {
+            Bank.println("Finns inget lån med det ID");
+        } else {
+            loan.updateInterestRate(newInterestRate, Bank.employee);
+        }
+        
+        Bank.println("\nRäntan är ändrad till " + newInterestRate + "% för lån " + loanId + "\n");
+        
+    }
+    
+    /**
+     * Writes a list of the history of changes to a loan
+     */
+    public void printListOfRateChanges() {
+        Loan loan;
+        while (true) {
+            try {
+                int loanId = Bank.getInt("Mata in lånID: ");
+                loan = getLoanFromList(loanId);
+                break;
+            } catch (Exception e) {
+                Bank.println(e.getMessage());
+            }
+        }
+        for (InterestHistory currentLoan : loan.getLoanHistory()) {
+            Bank.println(currentLoan.getListOfChanges());
+        }
+    }
+    
+    /**
+     * Search for a loan in a list of loans
+     *
+     * @param loanId ID number of the loan
+     *
+     * @return Loan
+     */
+    public Loan getLoanFromList(int loanId) {
+        for (Loan loan : loanList) {
+            if (loan.getLoanID() == loanId) {
+                return loan;
+            }
+        }
+        throw new ObjectNotFoundException("Den här kunden har inget lån med det ID numret. ");
+    }
+    
+    /**
+     * Writes a list of all loans for a customer
+     */
+    public void allLoansForACustomer() {
+        Bank.println(getName() + " har totalt " + loanList.size() + " lån hos banken");
+        for (Loan currentLoan : loanList) {
+            Bank.println("\nLån: " + currentLoan.getLoanID() +
+                    "\nTotal skuld: " + currentLoan.getDebt() +
+                    "\nRänta på lån: " + currentLoan.getInterestRate() +
+                    "\nAnsvarig på banken: " + currentLoan.getManager().getName() + "\n");
+        }
+    }
+    
     public void createAccount() {
         double depositAmount = Bank.getDouble("Ange belopp att sätta in: ");
         addAccount(depositAmount, Bank.employee);
-        Bank.println("Nytt konto skapat med " + accountList.get(accountList.size()-1).getAccountBalance());
+        Bank.println("Nytt konto skapat med " + accountList.get(accountList.size() - 1).getAccountBalance());
     }
     
     public void accountDeposit() {
@@ -55,14 +129,15 @@ public class Customer extends Person {
     }
     
     public void addAccount(double accountBalance, Employee employee) {
-        accountList.add(new Account(accountBalance, accountList.size()+1, employee));
+        accountList.add(new Account(accountBalance, accountList.size() + 1, employee));
     }
-
+    
     /**
      * Generate random numbers and put them in to a String
+     *
      * @return String of numbers
      */
-    private String makeRandomCustomerId(){
+    private String makeRandomCustomerId() {
         Random random = new Random();
         StringBuilder customerID = new StringBuilder();
         for (int i = 0; i < 6; i++) {
@@ -70,24 +145,24 @@ public class Customer extends Person {
         }
         return customerID.toString();
     }
-
-    public Loan getLatestLoan(){
-        return loanList.get(loanList.size()-1);
+    
+    public Loan getLatestLoan() {
+        return loanList.get(loanList.size() - 1);
     }
     
-    public void grantLoan(double loanAmount, Employee employee, double interestRate){
-        loanList.add(new Loan(loanAmount, employee, interestRate, loanList.size()+1));
+    public void grantLoan(double loanAmount, Employee employee, double interestRate) {
+        loanList.add(new Loan(loanAmount, employee, interestRate, loanList.size() + 1));
     }
     
-    public List<Loan> getLoanList(){
+    public List<Loan> getLoanList() {
         return loanList;
     }
-
-    public String  getCustomerId() {
+    
+    public String getCustomerId() {
         return customerId;
     }
     
-    public Account findAccount(){
+    public Account findAccount() {
         while (true) {
             try {
                 return getAccount(Bank.getInt("Ange kontonummer: "));
@@ -101,10 +176,11 @@ public class Customer extends Person {
         return accountList;
     }
     
-    public Account getAccount (int accountNumber){
+    public Account getAccount(int accountNumber) {
         for (Account account : accountList) {
-            if (account.getAccountNumber() == accountNumber)
-            return account;
+            if (account.getAccountNumber() == accountNumber) {
+                return account;
+            }
         }
         throw new ObjectNotFoundException("Kontot finns inte. ");
     }

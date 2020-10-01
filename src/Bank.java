@@ -114,7 +114,7 @@ public class Bank {
     }
     
     public static void loanMenu() {
-        
+        Customer customer = findCustomer();
         String input;
         while (true) {
             println("\nVälj vad du vill göra:\n" +
@@ -127,81 +127,17 @@ public class Bank {
             input = in.nextLine();
             
             switch (input) {
-                case "1" -> createLoan();
-                case "2" -> changeInterestRateOnLoan();
-                case "3" -> printListOfRateChanges();
-                case "4" -> allLoansForACustomer();
-                case "5" -> {return;}
-                default -> println("Ange ett giltigt val! (1-5)");
+                case "1" -> customer.createLoan();
+                case "2" -> customer.changeInterestRateOnLoan();
+                case "3" -> customer.printListOfRateChanges();
+                case "4" -> customer.allLoansForACustomer();
+                case "5" -> customer = findCustomer();
+                case "6" -> {return;}
+                default -> println("Ange ett giltigt val! (1-6)");
             }
         }
     }
     
-    
-    public static void createLoan() {
-        Customer customer = findCustomer();
-        
-        double loanAmount = getDouble("Ange lånets storlek: ");
-        double interest = getDouble("Ange lånets räntesats: ");
-        
-        customer.grantLoan(loanAmount, employee, interest);
-        println("Lån på " + customer.getLatestLoan().getDebt() + " skapat till " + customer.getName());
-    }
-    
-    
-    /**
-     * Method that changes the value of the loan rate
-     */
-    public static void changeInterestRateOnLoan() {
-        String loanId = getString("Mata in lånId: ");
-        
-        double newInterestRate = getDouble("Mata in nya räntan: ");
-        Customer customer = findCustomer();
-        Loan loan = searchForLoanInListOfLoan(customer, loanId);
-        if (loan == null) {
-            println("Finns inget lån med det ID");
-        } else {
-            loan.updateInterestRate(newInterestRate, employee);
-        }
-        
-        println("\nRäntan är ändrad till " + newInterestRate + "% för lån " + loanId + "\n");
-        
-    }
-    
-    /**
-     * Writes a list of the history of changes to a loan
-     */
-    public static void printListOfRateChanges() {
-        String loanId = getString("Mata in lånID: ");
-        Customer customer = findCustomer();
-        
-        Loan loan = searchForLoanInListOfLoan(customer, loanId);
-        if (loan == null) {
-            println("Finns inget lån med det ID");
-        } else {
-            for (int i = 0; i < loan.getLoanHistory().size(); i++) {
-                print(loan.getLoanHistory().get(i).getListOfChanges() + "\n");
-            }
-        }
-        
-    }
-    
-    /**
-     * Writes a list of all loans for a customer
-     */
-    public static void allLoansForACustomer() {
-        Customer customer = findCustomer();
-        println(customer.getName() + " har totalt " + customer.getLoanList().size() + " lån hos banken");
-        for (int i = 0; i < customer.getLoanList().size(); i++) {
-            Loan currentLoan = customer.getLoanList().get(i);
-            println(
-                    "\nLån: " + currentLoan.getLoanID() +
-                            "\nTotal skuld: " + currentLoan.getDebt() +
-                            "\nRänta på lån: " + currentLoan.getInterestRate() +
-                            "\nAnsvarig på banken: " + currentLoan.getManager().getName() +
-                            "\n");
-        }
-    }
     
     public static boolean exitMenu() {
         String input = getString("Är du säker på att du vill avsluta? (j/n) ");
@@ -293,21 +229,5 @@ public class Bank {
         }
     }
     
-    /**
-     * Search for a loan in a list of loans
-     *
-     * @param customer Customer of the the loan
-     * @param loanId   ID number of the loan
-     *
-     * @return Loan
-     */
-    public static Loan searchForLoanInListOfLoan(Customer customer, String loanId) {
-        for (Loan l : customer.getLoanList()) {
-            if (l.getLoanID() == Integer.parseInt(loanId)) {
-                return l;
-            }
-        }
-        return null;
-    }
 }
 

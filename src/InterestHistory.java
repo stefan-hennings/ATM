@@ -21,7 +21,6 @@ public class InterestHistory {
         return interestRate;
     }
     
-    // TODO: 01-Oct-20 Do we want to be able to call up a specific change? As it stands, we can only view all or none 
     public String getListOfChanges() {
         return listOfChanges;
     }
