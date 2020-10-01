@@ -25,8 +25,8 @@ public class Bank {
         patrik.addAccount(100000);
     }
     
-    static List<Customer> customerList = new ArrayList<>();
-    static List<Employee> employeeList = new LinkedList<>();
+    private static final List<Customer> customerList = new ArrayList<>();
+    private static final List<Employee> employeeList = new LinkedList<>();
     
     
     public static void welcomeMenu() {
