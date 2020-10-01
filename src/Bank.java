@@ -215,14 +215,13 @@ public class Bank {
     }
     
     public static Customer findCustomer() {
-        Customer customer = null;
-        while (customer == null) {
-            customer = getCustomer(getString("Ange ditt personnummer: "));
-            if (customer == null) {
-                System.out.println("Ogiltigt personnummer! ");
+        while (true) {
+            try {
+                return getCustomer(getString("Ange kundens personnummer: "));
+            } catch (CustomerNotFoundException e) {
+                System.out.println(e.getMessage());
             }
         }
-        return customer;
     }
     
     public static Customer getCustomer(String personalNumber) {
