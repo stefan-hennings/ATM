@@ -15,12 +15,12 @@ public class Bank {
         Employee julia = new Employee("Julia", "x", 25000);
         employeeList.add(stefan);
         employeeList.add(julia);
-
+        
         oscar.grantLoan(25000, stefan, 2); //Loan 1
         oscar.grantLoan(35000, stefan, 3); //Loan 2
         patrik.grantLoan(10000, julia, 2); //Loan 1
         patrik.grantLoan(15000, julia, 4); //Loan 2
-
+        
         oscar.addAccount(30000);
         patrik.addAccount(100000);
     }
@@ -37,7 +37,7 @@ public class Bank {
                 "3. Konto\n" +
                 "4. Lån\n" +
                 "5. Avsluta");
-    
+        
         input = in.nextLine();
         
         switch (input) {
@@ -75,20 +75,20 @@ public class Bank {
         
         employeeList.add(new Employee(name, personalNumber, salary));
         println("Ny anställd skapad");
-    
+        
     }
-
-    private static void accountMenu(){
+    
+    private static void accountMenu() {
         String input;
         println("\nVälj vad du vill göra:\n" +
                 "1. Öppna nytt konto\n" +
                 "2. Gör insättning\n" +
                 "3. Gör uttag\n" +
-                "4. Saldo\n"+
+                "4. Saldo\n" +
                 "5. Ändra ränta\n" +
                 "6. Återgå till huvudmenyn");
         input = in.nextLine();
-
+        
         switch (input) {
             case "1" -> createAccount();
             case "2" -> accountDeposit();
@@ -106,44 +106,48 @@ public class Bank {
         Customer customer = findCustomer();
         double depositAmount = getDouble("Ange belopp att sätta in: ");
         customer.addAccount(depositAmount);
-        println("Nytt konto skapat med " + customer.getAccountList().get(customer.getAccountList().size()-1).getAccountBalance());
+        println("Nytt konto skapat med " + customer.getAccountList().get(customer.getAccountList().size() - 1).getAccountBalance());
     }
-
-        public static void accountDeposit(){
-
-
+    
+    public static void accountDeposit() {
+        
+        
         Customer customer = findCustomer();
         Account account = customer.findAccount();
         double changeBalance = getDouble("Ange belopp du vill ta sätta in: ");
         account.changeBalance(changeBalance);
         println("Kontobalans är nu " + account.getAccountBalance());
     }
-
-        public static void accountWithdraw(){
-
+    
+    public static void accountWithdraw() {
+        
         Customer customer = findCustomer();
         Account account = customer.findAccount();
         double changeBalance = -1 * getDouble("Ange belopp du vill ta ut: ");
-        account.changeBalance(changeBalance);
+        try {
+            account.changeBalance(changeBalance);
+        } catch (IllegalArgumentException e) {
+            println(e.getMessage());
+        }
         println("Kontobalans är nu " + account.getAccountBalance());
     }
-
-        public static void viewAccountBalance(){
-            Customer customer = findCustomer();
-            Account account = customer.findAccount();
-            println("Saldo: " + account.getAccountBalance());
-        }
-
-        public static void changeAccountInterestRate(){
-
+    
+    public static void viewAccountBalance() {
+        Customer customer = findCustomer();
+        Account account = customer.findAccount();
+        println("Saldo: " + account.getAccountBalance());
+    }
+    
+    public static void changeAccountInterestRate() {
+        
         Customer customer = findCustomer();
         Account account = customer.findAccount();
         double changeInterest = getDouble("Ange den nya räntan: ");
         account.changeInterestRate(changeInterest);
     }
-
-    public static void loanMenu(){
-
+    
+    public static void loanMenu() {
+        
         String input;
         println("\nVälj vad du vill göra:\n" +
                 "1. Ansök om nytt lån\n" +
@@ -151,9 +155,9 @@ public class Bank {
                 "3. Skriva ut lista med ändringar för ett lån\n" +
                 "4. Skriva ut lista för kundens alla lån\n" +
                 "5. Gå till huvudmenyn");
-    
+        
         input = in.nextLine();
-
+        
         switch (input) {
             case "1" -> createLoan();
             case "2" -> changeInterestRateOnLoan();
@@ -164,12 +168,12 @@ public class Bank {
         }
         loanMenu();
     }
-
+    
     
     public static void createLoan() {
         Employee employee = findEmployee();
         Customer customer = findCustomer();
-    
+        
         double loanAmount = getDouble("Ange lånets storlek: ");
         double interest = getDouble("Ange lånets räntesats: ");
         
@@ -177,7 +181,7 @@ public class Bank {
         println("Lån på " + customer.getLatestLoan().getDebt() + " skapat till " + customer.getName());
         welcomeMenu();
     }
-
+    
     
     /**
      * Method that changes the value of the loan rate
@@ -202,7 +206,7 @@ public class Bank {
     /**
      * Writes a list of the history of changes to a loan
      */
-        public static void printListOfRateChanges() {
+    public static void printListOfRateChanges() {
         String loanId = getString("Mata in lånID: ");
         Customer customer = findCustomer();
         
@@ -273,7 +277,7 @@ public class Bank {
                 println(e.getMessage());
             }
         }
-       
+        
     }
     
     public static Employee getEmployee(String personalNumber) {
@@ -328,8 +332,8 @@ public class Bank {
     /**
      * Search for a loan in a list of loans
      *
-     * @param customer      Customer of the the loan
-     * @param loanId ID number of the loan
+     * @param customer Customer of the the loan
+     * @param loanId   ID number of the loan
      *
      * @return Loan
      */
