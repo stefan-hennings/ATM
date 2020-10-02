@@ -172,7 +172,7 @@ public class Customer extends Person implements Serializable {
         while (true) {
             try {
                 return getAccount(Utility.getInt("Ange kontonummer: "));
-            } catch (CustomerNotFoundException e) {
+            } catch (ObjectNotFoundException e) {
                 Utility.println(e.getMessage());
             }
         }
