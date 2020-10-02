@@ -96,7 +96,7 @@ public class Customer extends Person implements Serializable {
     }
     
     public void createAccount() {
-        double depositAmount = 0;
+        double depositAmount;
         do {
             depositAmount = Utility.getDouble("Ange belopp att sätta in: ");
         } while (depositAmount < 0);
@@ -161,10 +161,6 @@ public class Customer extends Person implements Serializable {
         return customerID.toString();
     }
 
-    public void addAccount(double accountBalance, Employee employee) {
-        accountList.add(new Account(accountBalance, accountList.size() + 1, employee));
-    }
-
     public Loan getLatestLoan() {
         return loanList.get(loanList.size() - 1);
     }
@@ -172,10 +168,6 @@ public class Customer extends Person implements Serializable {
     public void grantLoan(double loanAmount, Employee employee, double interestRate) {
         loanList.add(new Loan(loanAmount, employee, interestRate, loanList.size() + 1));
         Bank.serialize();
-    }
-    
-    public String getCustomerId() {
-        return customerId;
     }
     
     public Account findAccount() {
