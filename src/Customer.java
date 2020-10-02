@@ -125,8 +125,12 @@ public class Customer extends Person implements Serializable {
     }
     
     public void viewAllAccounts() {
-        for (Account account : accountList) {
-            Utility.println("" + account);
+        if (accountList.isEmpty()) {
+            Utility.println("Du har inget konto hos oss.");
+        } else {
+            for (Account account : accountList) {
+                Utility.println("" + account);
+            }
         }
     }
     
