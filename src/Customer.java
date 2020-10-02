@@ -1,9 +1,10 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 
-public class Customer extends Person {
+public class Customer extends Person implements Serializable {
     private final List<Account> accountList = new ArrayList<>();
     private final List<Loan> loanList = new ArrayList<>();
     private final String customerId;
@@ -86,7 +87,10 @@ public class Customer extends Person {
     }
     
     public void createAccount() {
-        double depositAmount = Bank.getDouble("Ange belopp att sätta in: ");
+        double depositAmount = 0;
+        do {
+            depositAmount = Bank.getDouble("Ange belopp att sätta in: ");
+        } while (depositAmount < 0);
         addAccount(depositAmount, Bank.employee);
         Bank.println("Nytt konto skapat med " + accountList.get(accountList.size() - 1).getAccountBalance());
     }

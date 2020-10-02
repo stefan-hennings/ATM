@@ -1,12 +1,59 @@
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Bank implements Serializable {
-    static Scanner in = new Scanner(System.in);
+    private static List<Customer> customerList = new ArrayList<>();
+    private static List<Employee> employeeList = new LinkedList<>();
+//    private static final List<Employee> employeeList = new LinkedList<>();
     static Employee employee;
+    static Scanner in = new Scanner(System.in);
+    
+    public static void serialize() {
+        try {
+            FileOutputStream fileOut = new FileOutputStream("employees.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(employeeList);
+            out.close();
+            fileOut.close();
+            System.out.println("Serialized data is saved in employee.ser");
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+        try {
+            FileOutputStream fileOut = new FileOutputStream("customers.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(customerList);
+            out.close();
+            fileOut.close();
+            System.out.println("Serialized data is saved in customers.ser");
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+    }
+    
+    public static void deSerialize() {
+        try {
+            FileInputStream fileIn = new FileInputStream("employees.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            employeeList = (List<Employee>) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (Exception e) {
+            System.out.println("Employee list not found");
+        }
+        try {
+            FileInputStream fileIn = new FileInputStream("customers.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            customerList = (List<Customer>) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (Exception e) {
+            System.out.println("Customer list not found");
+        }
+    }
     
     public static void testCode() {
         Customer oscar = new Customer("Oscar", "xxx");
@@ -27,12 +74,13 @@ public class Bank implements Serializable {
         patrik.addAccount(100000, julia);
     }
     
-    private static final List<Customer> customerList = new ArrayList<>();
-    private static final List<Employee> employeeList = new LinkedList<>();
-    
     
     public static void welcomeMenu() {
         String input;
+        if (employeeList.isEmpty()) {
+            println("Det finns inga anställda! Anställ någon NU! ");
+            createEmployee();
+        }
         employee = findEmployee();
         println("Välkommen " + employee.getName() + "!");
         
@@ -44,7 +92,7 @@ public class Bank implements Serializable {
                     "3. Konto\n" +
                     "4. Lån\n" +
                     "5. Byt inloggning\n" +
-                    "5. Avsluta");
+                    "6. Avsluta");
             
             input = in.nextLine();
             
@@ -58,6 +106,7 @@ public class Bank implements Serializable {
                     println("Välkommen " + employee.getName() + "!");
                 }
                 case "6" -> running = exitMenu();
+                case "7" -> serialize();
                 default -> println("Ange ett giltigt val! (1-6)");
             }
         }
@@ -116,7 +165,9 @@ public class Bank implements Serializable {
                     customer = findCustomer();
                     println(customer.getName() + " har valts. ");
                 }
-                case "8" -> {return;}
+                case "8" -> {
+                    return;
+                }
                 default -> println("Ange ett giltigt val! (1-8)");
             }
         }
@@ -148,7 +199,9 @@ public class Bank implements Serializable {
                     customer = findCustomer();
                     println(customer.getName() + " har valts. ");
                 }
-                case "7" -> {return;}
+                case "7" -> {
+                    return;
+                }
                 default -> println("Ange ett giltigt val! (1-7)");
             }
         }
@@ -167,6 +220,10 @@ public class Bank implements Serializable {
     }
     
     public static Customer findCustomer() {
+        if (customerList.isEmpty()) {
+            println("Det finns inga kunder! Skapa en nu.");
+            createCustomer();
+        }
         while (true) {
             try {
                 return getCustomer(getString("Ange kundens personnummer: "));

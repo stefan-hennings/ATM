@@ -1,4 +1,6 @@
-public class Employee extends Person {
+import java.io.Serializable;
+
+public class Employee extends Person implements Serializable {
     private double salary;
     
     public Employee(String name, String personalId, double salary) {
