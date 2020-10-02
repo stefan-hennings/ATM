@@ -57,7 +57,7 @@ public class Bank implements Serializable {
         
         boolean running = true;
         while (running) {
-            Utility.println("\nVälj vad du vill göra:\n" +
+            Utility.println("\nVälj vad du vill göra:\n\n" +
                     "1. Lägg till ny kund\n" +
                     "2. Anställ någon\n" +
                     "3. Konto\n" +
@@ -89,16 +89,22 @@ public class Bank implements Serializable {
         while (true) {
             String name = Utility.getString("Mata in kundens namn: ");
             String personalNumber = Utility.getString("Mata in kundens personnummer: ");
-            // TODO: 01-Oct-20 Reverse logic
-            try {
-                Utility.getCustomer(personalNumber);
-                Utility.println("Kunden finns redan! ");
-            } catch (CustomerNotFoundException e) {
+            boolean isFound = false;
+            for (Customer customer : Bank.customerList) {
+                if (customer.getPersonalId().equalsIgnoreCase(personalNumber)) {
+                    Utility.println("Kunden finns redan! ");
+                    isFound = true;
+                }
+            }
+            if (!isFound) {
                 customerList.add(new Customer(name, personalNumber));
                 break;
+            } else {
+                if (Utility.getString("Vill du försöka igen? (j/n) ").equalsIgnoreCase("n")) {
+                    break;
+                }
             }
         }
-        
     }
     
     public static void createEmployee() {
@@ -116,7 +122,7 @@ public class Bank implements Serializable {
         Customer customer = Utility.findCustomer();
         Utility.println(customer.getName() + " har valts. ");
         while (true) {
-            Utility.println("\nVälj vad du vill göra:\n" +
+            Utility.println("\nVälj vad du vill göra:\n\n" +
                     "1. Öppna nytt konto\n" +
                     "2. Gör insättning\n" +
                     "3. Gör uttag\n" +
@@ -151,7 +157,7 @@ public class Bank implements Serializable {
         Utility.println(customer.getName() + " har valts. ");
         String input;
         while (true) {
-            Utility.println("\nVälj vad du vill göra:\n" +
+            Utility.println("\nVälj vad du vill göra:\n\n" +
                     "1. Ansök om nytt lån\n" +
                     "2. Ändra räntan på ett befintligt lån lån\n" +
                     "3. Skriva ut lista med ändringar för ett lån\n" +
