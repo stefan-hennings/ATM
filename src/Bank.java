@@ -35,20 +35,16 @@ public class Bank implements Serializable {
     
     public static void deSerialize() {
         try {
-            FileInputStream fileIn = new FileInputStream("employees.ser");
-            ObjectInputStream in = new ObjectInputStream(fileIn);
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream("employees.ser"));
             employeeList = (List<Employee>) in.readObject();
             in.close();
-            fileIn.close();
         } catch (Exception e) {
             System.out.println("Employee list not found");
         }
         try {
-            FileInputStream fileIn = new FileInputStream("customers.ser");
-            ObjectInputStream in = new ObjectInputStream(fileIn);
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream("customers.ser"));
             customerList = (List<Customer>) in.readObject();
             in.close();
-            fileIn.close();
         } catch (Exception e) {
             System.out.println("Customer list not found");
         }
