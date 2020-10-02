@@ -12,21 +12,17 @@ public class Bank implements Serializable {
     
     public static void serialize() {
         try {
-            FileOutputStream fileOut = new FileOutputStream("employees.ser");
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("employees.ser"));
             out.writeObject(employeeList);
             out.close();
-            fileOut.close();
             System.out.println("Serialized data is saved in employee.ser");
         } catch (IOException i) {
             i.printStackTrace();
         }
         try {
-            FileOutputStream fileOut = new FileOutputStream("customers.ser");
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("customers.ser"));
             out.writeObject(customerList);
             out.close();
-            fileOut.close();
             System.out.println("Serialized data is saved in customers.ser");
         } catch (IOException i) {
             i.printStackTrace();
