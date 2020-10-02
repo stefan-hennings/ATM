@@ -15,11 +15,11 @@ public class Customer extends Person implements Serializable {
     }
     
     public void applyForLoan() {
-        double loanAmount = Bank.getDouble("Ange lånets storlek: ");
-        double interest = Bank.getDouble("Ange lånets räntesats: ");
+        double loanAmount = Utility.getDouble("Ange lånets storlek: ");
+        double interest = Utility.getDouble("Ange lånets räntesats: ");
         
         grantLoan(loanAmount, Bank.employee, interest);
-        Bank.println("Lån på " + getLatestLoan().getDebt() + " skapat till " + getName());
+        Utility.println("Lån på " + getLatestLoan().getDebt() + " skapat till " + getName());
     }
     
     /**
@@ -27,9 +27,9 @@ public class Customer extends Person implements Serializable {
      */
     public void changeInterestRateOnLoan() {
         Loan loan = findLoan();
-        double newInterestRate = Bank.getDouble("Mata in nya räntan: ");
+        double newInterestRate = Utility.getDouble("Mata in nya räntan: ");
         loan.updateInterestRate(newInterestRate, Bank.employee);
-        Bank.println("\nRäntan är ändrad till " + newInterestRate + "% för lån " + loan.getLoanID() + "\n");
+        Utility.println("\nRäntan är ändrad till " + newInterestRate + "% för lån " + loan.getLoanID() + "\n");
     }
     
     /**
@@ -38,16 +38,16 @@ public class Customer extends Person implements Serializable {
     public void printListOfInterestRateChanges() {
         Loan loan = findLoan();
         for (InterestHistory currentLoan : loan.getLoanHistory()) {
-            Bank.println(currentLoan.getListOfChanges());
+            Utility.println(currentLoan.getListOfChanges());
         }
     }
     
     public Loan findLoan() {
         while (true) {
             try {
-                return getLoanFromList(Bank.getInt("Mata in lånID: "));
+                return getLoanFromList(Utility.getInt("Mata in lånID: "));
             } catch (ObjectNotFoundException e) {
-                Bank.println(e.getMessage());
+                Utility.println(e.getMessage());
             }
         }
     }
@@ -72,9 +72,9 @@ public class Customer extends Person implements Serializable {
      * Writes a list of all loans for a customer
      */
     public void printAllLoans() {
-        Bank.println(getName() + " har totalt " + loanList.size() + " lån hos banken");
+        Utility.println(getName() + " har totalt " + loanList.size() + " lån hos banken");
         for (Loan currentLoan : loanList) {
-            Bank.println("\nLån: " + currentLoan.getLoanID() +
+            Utility.println("\nLån: " + currentLoan.getLoanID() +
                     "\nTotal skuld: " + currentLoan.getDebt() +
                     "\nRänta på lån: " + currentLoan.getInterestRate() +
                     "\nAnsvarig på banken: " + currentLoan.getManager().getName() + "\n");
@@ -83,50 +83,50 @@ public class Customer extends Person implements Serializable {
     
     public void repayLoan() {
         Loan loan = findLoan();
-        loan.repay(Bank.getDouble("Hur mycket ska betalas tillbaka? "));
+        loan.repay(Utility.getDouble("Hur mycket ska betalas tillbaka? "));
     }
     
     public void createAccount() {
         double depositAmount = 0;
         do {
-            depositAmount = Bank.getDouble("Ange belopp att sätta in: ");
+            depositAmount = Utility.getDouble("Ange belopp att sätta in: ");
         } while (depositAmount < 0);
         addAccount(depositAmount, Bank.employee);
-        Bank.println("Nytt konto skapat med " + accountList.get(accountList.size() - 1).getAccountBalance());
+        Utility.println("Nytt konto skapat med " + accountList.get(accountList.size() - 1).getAccountBalance());
     }
     
     public void accountDeposit() {
         Account account = findAccount();
-        double changeBalance = Bank.getDouble("Ange belopp du vill ta sätta in: ");
+        double changeBalance = Utility.getDouble("Ange belopp du vill ta sätta in: ");
         account.changeBalance(changeBalance);
-        Bank.println("Kontobalans är nu " + account.getAccountBalance());
+        Utility.println("Kontobalans är nu " + account.getAccountBalance());
     }
     
     public void accountWithdraw() {
         Account account = findAccount();
-        double changeBalance = -1 * Bank.getDouble("Ange belopp du vill ta ut: ");
+        double changeBalance = -1 * Utility.getDouble("Ange belopp du vill ta ut: ");
         try {
             account.changeBalance(changeBalance);
         } catch (IllegalArgumentException e) {
-            Bank.println(e.getMessage());
+            Utility.println(e.getMessage());
         }
-        Bank.println("Kontobalans är nu " + account.getAccountBalance());
+        Utility.println("Kontobalans är nu " + account.getAccountBalance());
     }
     
     public void viewAccountBalance() {
         Account account = findAccount();
-        Bank.println("Saldo: " + account.getAccountBalance());
+        Utility.println("Saldo: " + account.getAccountBalance());
     }
     
     public void changeAccountInterestRate() {
         Account account = findAccount();
-        double changeInterest = Bank.getDouble("Ange den nya räntan: ");
+        double changeInterest = Utility.getDouble("Ange den nya räntan: ");
         account.changeInterestRate(Bank.employee, changeInterest);
     }
     
     public void viewAllAccounts() {
         for (Account account : accountList) {
-            Bank.println("" + account);
+            Utility.println("" + account);
         }
     }
     
@@ -167,9 +167,9 @@ public class Customer extends Person implements Serializable {
     public Account findAccount() {
         while (true) {
             try {
-                return getAccount(Bank.getInt("Ange kontonummer: "));
+                return getAccount(Utility.getInt("Ange kontonummer: "));
             } catch (CustomerNotFoundException e) {
-                Bank.println(e.getMessage());
+                Utility.println(e.getMessage());
             }
         }
     }
