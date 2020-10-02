@@ -10,46 +10,32 @@ public class CustomerMain {
     public void welcomeMenu(){
 
         Bank.deSerialize();
-        Customer customer = Utility.customerSearchForTheirUserAccount();
         boolean running = true;
-        Utility.println(String.format("\nVälkommen %s!", customer.getName()));
         while (running) {
+            Customer customer = Utility.customerSearchForTheirUserAccount();
+            Utility.println(String.format("\nVälkommen %s!", customer.getName()));
             if (customer.getAccountList().isEmpty()) {
-                Utility.println(String.format("\nDu har inte öppnat något konto hos oss.\n" +
-                        "Besök vårt närmaste bankkontor för att öppna ett konto.", customer.getName()));
-                running = false;
+                Utility.println("\nDu har inte öppnat något konto hos oss.\n" +
+                        "Besök vårt närmaste bankkontor för att öppna ett konto.");
+                return;
             } else {
-                String input = Utility.getString(String.format("\nVad vill du göra?\n\n" +
+                String input = Utility.getString("\nVad vill du göra?\n\n" +
                         "1. Uttag\n" +
                         "2. Insättning\n" +
                         "3. Visa saldo\n" +
-                        "4. Avsluta\n", customer.getName()));
+                        "4. Avsluta\n");
 
                 switch (input) {
-                    case "1" -> {
-                        try {
-                            customer.accountWithdraw();
-                        } catch (Exception e) {
-                            Utility.println("\nKontot finns inte.");
-                        }
-                    }
-                    case "2" -> {
-                        try {
-                            customer.accountDeposit();
-                        } catch (Exception e){
-                            Utility.println("\nKontot finns inte.");
-                        }
-                    }
-                    case "3" -> {
-                        customer.viewAllAccounts();
-                    }
+                    case "1" -> customer.accountWithdraw();
+                    case "2" -> customer.accountDeposit();
+                    case "3" -> customer.viewAllAccounts();
                     case "4" -> {
-                        boolean isQuitting = Bank.exitMenu();
-                        if(!isQuitting){
+                        // TODO: 02-Oct-20 Require employee authorization to shut down the machine
+                        running = Bank.exitMenu();
+                        if(!running){
                             Utility.println("\n");
                             Bank.serialize();
                         }
-                        running = isQuitting;
                     }
                     default -> Utility.println("Var god ange ett giltigt val (1-4)\n");
                 }

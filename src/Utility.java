@@ -16,8 +16,8 @@ public class Utility {
 
     public static Customer customerSearchForTheirUserAccount() {
         if (Bank.customerList.isEmpty()) {
-            println("Just nu kommer vi inte åt vår server. Var god försök igen.");
-            Bank.createCustomer();
+            println("Just nu kommer vi inte åt vår server. Var god försök igen senare. ");
+            System.exit(0);
         }
         while (true) {
             try {
