@@ -15,7 +15,6 @@ public class Bank implements Serializable {
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("employees.ser"));
             out.writeObject(employeeList);
             out.close();
-            System.out.println("Serialized data is saved in employee.ser");
         } catch (IOException i) {
             i.printStackTrace();
         }
@@ -23,7 +22,7 @@ public class Bank implements Serializable {
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("customers.ser"));
             out.writeObject(customerList);
             out.close();
-            System.out.println("Serialized data is saved in customers.ser");
+            System.out.println("Files updated");
         } catch (IOException i) {
             i.printStackTrace();
         }
@@ -98,6 +97,7 @@ public class Bank implements Serializable {
             }
             if (!isFound) {
                 customerList.add(new Customer(name, personalNumber));
+                serialize();
                 break;
             } else {
                 if (Utility.getString("Vill du försöka igen? (j/n) ").equalsIgnoreCase("n")) {
@@ -113,6 +113,7 @@ public class Bank implements Serializable {
         double salary = Utility.getDouble("Mata in den anställdas lön: ");
         
         employeeList.add(new Employee(name, personalNumber, salary));
+        serialize();
         Utility.println("Ny anställd skapad");
         
     }
@@ -129,7 +130,7 @@ public class Bank implements Serializable {
                     "4. Saldo\n" +
                     "5. Ändra ränta\n" +
                     "6. Visa alla konton\n" +
-                    "7. Ändra kund\n" +
+                    "7. Byt kund\n" +
                     "8. Återgå till huvudmenyn");
             input = in.nextLine();
             

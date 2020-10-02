@@ -24,6 +24,7 @@ public class Account implements Serializable {
     }
     public void changeInterestRate(Employee employee, double newInterest){
         accountHistory.add(new InterestHistory(employee, newInterest));
+        Bank.serialize();
     }
 
     public int getAccountNumber() {
