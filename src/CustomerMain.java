@@ -6,9 +6,9 @@
  * Copyright: MIT
  */
 public class CustomerMain {
-
-    public void welcomeMenu(){
-
+    
+    public void welcomeMenu() {
+        
         Bank.deSerialize();
         boolean running = true;
         while (running) {
@@ -24,25 +24,19 @@ public class CustomerMain {
                         "2. Insättning\n" +
                         "3. Visa saldo\n" +
                         "4. Avsluta\n");
-
+                
                 switch (input) {
                     case "1" -> customer.accountWithdraw();
                     case "2" -> customer.accountDeposit();
                     case "3" -> customer.viewAllAccounts();
-                    case "4" -> {
-                        // TODO: 02-Oct-20 Require employee authorization to shut down the machine
-                        running = Bank.exitMenu();
-                        if(!running){
-                            Utility.println("\n");
-                            Bank.serialize();
-                        }
-                    }
+                    // TODO: 02-Oct-20 Require employee authorization to shut down the machine
+                    case "4" -> running = Bank.exitMenu();
                     default -> Utility.println("Var god ange ett giltigt val (1-4)\n");
                 }
             }
         }
     }
-
+    
     public static void main(String[] args) {
         CustomerMain run = new CustomerMain();
         run.welcomeMenu();

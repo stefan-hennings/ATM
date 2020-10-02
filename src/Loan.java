@@ -6,13 +6,13 @@ public class Loan implements Serializable {
     private final int loanID;
     private double debt;
     private final List<InterestHistory> loanHistory = new ArrayList<>();
-
+    
     public Loan(double debt, Employee manager, double interestRate, int loanID) {
         this.debt = debt;
         this.loanID = loanID;
         loanHistory.add(new InterestHistory(manager, interestRate));
     }
-
+    
     public int getLoanID() {
         return loanID;
     }
@@ -32,15 +32,15 @@ public class Loan implements Serializable {
     }
     
     public double getInterestRate() {
-        return loanHistory.get(loanHistory.size()-1).getInterestRate();
+        return loanHistory.get(loanHistory.size() - 1).getInterestRate();
     }
     
     public Employee getManager() {
-        return loanHistory.get(loanHistory.size()-1).getManager();
+        return loanHistory.get(loanHistory.size() - 1).getManager();
     }
-
+    
     public List<InterestHistory> getLoanHistory() {
         return loanHistory;
     }
-
+    
 }

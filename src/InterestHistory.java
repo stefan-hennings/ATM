@@ -11,7 +11,7 @@ public class InterestHistory implements Serializable {
         this.manager = manager;
         this.interestRate = interestRate;
         this.startDate = LocalDate.now();
-        this.listOfChanges = setListOfChanges();
+        setListOfChanges();
     }
     
     public Employee getManager() {
@@ -26,13 +26,9 @@ public class InterestHistory implements Serializable {
         return listOfChanges;
     }
     
-    public String setListOfChanges() {
-        return listOfChanges =
-
-                "\nNy ränta: " + interestRate +
-                "\nDatum för ändring: " + startDate+
-                        "\nBeviljat av: " + manager.getName();
+    public void setListOfChanges() {
+        listOfChanges = "\nNy ränta: " + interestRate +
+                "\nDatum för ändring: " + startDate +
+                "\nBeviljat av: " + manager.getName();
     }
-    
-
 }

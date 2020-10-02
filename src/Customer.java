@@ -92,7 +92,6 @@ public class Customer extends Person implements Serializable {
             depositAmount = Utility.getDouble("Ange belopp att sätta in: ");
         } while (depositAmount < 0);
         addAccount(depositAmount, Bank.employee);
-        Bank.serialize();
         Utility.println("Nytt konto skapat med " + accountList.get(accountList.size() - 1).getAccountBalance());
     }
     
@@ -100,7 +99,6 @@ public class Customer extends Person implements Serializable {
         Account account = findAccount();
         double changeBalance = Utility.getDouble("Ange belopp du vill ta sätta in: ");
         account.changeBalance(changeBalance);
-        Bank.serialize();
         Utility.println("Kontobalans är nu " + account.getAccountBalance());
     }
     
@@ -109,7 +107,6 @@ public class Customer extends Person implements Serializable {
         double changeBalance = -1 * Utility.getDouble("Ange belopp du vill ta ut: ");
         try {
             account.changeBalance(changeBalance);
-            Bank.serialize();
         } catch (IllegalArgumentException e) {
             Utility.println(e.getMessage());
         }
@@ -123,8 +120,7 @@ public class Customer extends Person implements Serializable {
     
     public void changeAccountInterestRate() {
         Account account = findAccount();
-        double changeInterest = Utility.getDouble("Ange den nya räntan: ");
-        account.changeInterestRate(Bank.employee, changeInterest);
+        account.changeInterestRate(Bank.employee, Utility.getDouble("Ange den nya räntan: "));
     }
     
     public void viewAllAccounts() {
@@ -139,6 +135,7 @@ public class Customer extends Person implements Serializable {
     
     public void addAccount(double accountBalance, Employee employee) {
         accountList.add(new Account(accountBalance, accountList.size() + 1, employee));
+        Bank.serialize();
     }
     
     /**
