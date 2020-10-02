@@ -7,7 +7,7 @@ public class Loan implements Serializable {
     private double debt;
     private double startDebt;
     private final List<InterestHistory> loanHistory = new ArrayList<>();
-    private final List<DeptHistory> deptHistory = new ArrayList<>();
+    private final List<DebtHistory> debtHistory = new ArrayList<>();
 
     public Loan(double debt, Employee manager, double interestRate, int loanID) {
         this.startDebt = debt;
@@ -39,7 +39,7 @@ public class Loan implements Serializable {
     }
 
     public void updateDept(double dept){
-        deptHistory.add(new DeptHistory(dept, Bank.employee));
+        debtHistory.add(new DebtHistory(dept, Bank.employee));
     }
     
     public double getInterestRate() {
@@ -53,7 +53,7 @@ public class Loan implements Serializable {
     public List<InterestHistory> getLoanHistory() {
         return loanHistory;
     }
-    public List<DeptHistory> getDeptHistory() {
-        return deptHistory;
+    public List<DebtHistory> getDeptHistory() {
+        return debtHistory;
     }
 }

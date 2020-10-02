@@ -19,7 +19,7 @@ public class CustomerMain {
                         "Besök vårt närmaste bankkontor för att öppna ett konto.");
                 return;
             } else {
-                String input = Utility.getString("\nVad vill du göra?\n\n" +
+                String input = Utility.getString("\n\nVad vill du göra?\n\n" +
                         "1. Uttag\n" +
                         "2. Insättning\n" +
                         "3. Visa saldo\n" +

@@ -8,13 +8,13 @@ import java.time.LocalDate;
  * Project: ATM
  * Copyright: MIT
  */
-public class DeptHistory implements Serializable {
+public class DebtHistory implements Serializable {
     private final Employee manager;
     private double debt;
     private final LocalDate startDate;
     private String listOfChanges;
     
-    public DeptHistory(double debt, Employee manager) {
+    public DebtHistory(double debt, Employee manager) {
         this.manager = manager;
         this.debt = debt;
         this.startDate = LocalDate.now();

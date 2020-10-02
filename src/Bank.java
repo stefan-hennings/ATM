@@ -56,7 +56,7 @@ public class Bank implements Serializable {
         
         boolean running = true;
         while (running) {
-            Utility.println("\nVälj vad du vill göra:\n\n" +
+            Utility.println("\n\nVälj vad du vill göra:\n\n" +
                     "1. Lägg till ny kund\n" +
                     "2. Anställ någon\n" +
                     "3. Konto\n" +
@@ -123,7 +123,7 @@ public class Bank implements Serializable {
         Customer customer = Utility.findCustomer();
         Utility.println(customer.getName() + " har valts. ");
         while (true) {
-            Utility.println("\nVälj vad du vill göra:\n\n" +
+            Utility.println("\n\nVälj vad du vill göra:\n\n" +
                     "1. Öppna nytt konto\n" +
                     "2. Gör insättning\n" +
                     "3. Gör uttag\n" +
@@ -158,7 +158,7 @@ public class Bank implements Serializable {
         Utility.println(customer.getName() + " har valts. ");
         String input;
         while (true) {
-            Utility.println("\nVälj vad du vill göra:\n\n" +
+            Utility.println("\n\nVälj vad du vill göra:\n\n" +
                     "1. Ansök om nytt lån\n" +
                     "2. Ändra räntan på ett befintligt lån lån\n" +
                     "3. Lista med ändringar av ränta för ett lån\n" +

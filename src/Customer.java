@@ -89,8 +89,8 @@ public class Customer extends Person implements Serializable {
 
     public void printListOfRepayLoanHistory(){
         Loan loan = findLoan();
-        System.out.print("Lån från start: " + loan.getStartDebt());
-        for (DeptHistory currentLoan : loan.getDeptHistory()) {
+        System.out.println("Lån från start: " + loan.getStartDebt());
+        for (DebtHistory currentLoan : loan.getDeptHistory()) {
             Utility.println(currentLoan.getListOfChanges());
         }
     }
