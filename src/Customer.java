@@ -80,10 +80,20 @@ public class Customer extends Person implements Serializable {
                     "\nAnsvarig på banken: " + currentLoan.getManager().getName() + "\n");
         }
     }
-    
+
+    public void printListOfRepayLoanHistory(){
+        Loan loan = findLoan();
+        System.out.print("\nLåneskuld från start: " + loan.getOldDebt());
+        for (DeptHistory currentLoan : loan.getDeptHistory()) {
+            Utility.println(currentLoan.getListOfChanges());
+        }
+    }
+
     public void repayLoan() {
         Loan loan = findLoan();
-        loan.repay(Utility.getDouble("Hur mycket ska betalas tillbaka? "));
+        double newDept = Utility.getDouble("Hur mycket ska betalas tillbaka? ");
+        loan.repay(newDept);
+        loan.updateDept(newDept, Bank.employee);
     }
     
     public void createAccount() {
