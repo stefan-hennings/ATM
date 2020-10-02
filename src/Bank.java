@@ -12,21 +12,17 @@ public class Bank implements Serializable {
     
     public static void serialize() {
         try {
-            FileOutputStream fileOut = new FileOutputStream("employees.ser");
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("employees.ser"));
             out.writeObject(employeeList);
             out.close();
-            fileOut.close();
             System.out.println("Serialized data is saved in employee.ser");
         } catch (IOException i) {
             i.printStackTrace();
         }
         try {
-            FileOutputStream fileOut = new FileOutputStream("customers.ser");
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("customers.ser"));
             out.writeObject(customerList);
             out.close();
-            fileOut.close();
             System.out.println("Serialized data is saved in customers.ser");
         } catch (IOException i) {
             i.printStackTrace();
@@ -35,20 +31,16 @@ public class Bank implements Serializable {
     
     public static void deSerialize() {
         try {
-            FileInputStream fileIn = new FileInputStream("employees.ser");
-            ObjectInputStream in = new ObjectInputStream(fileIn);
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream("employees.ser"));
             employeeList = (List<Employee>) in.readObject();
             in.close();
-            fileIn.close();
         } catch (Exception e) {
             System.out.println("Employee list not found");
         }
         try {
-            FileInputStream fileIn = new FileInputStream("customers.ser");
-            ObjectInputStream in = new ObjectInputStream(fileIn);
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream("customers.ser"));
             customerList = (List<Customer>) in.readObject();
             in.close();
-            fileIn.close();
         } catch (Exception e) {
             System.out.println("Customer list not found");
         }

@@ -28,9 +28,10 @@ public class InterestHistory implements Serializable {
     
     public String setListOfChanges() {
         return listOfChanges =
-                "\nAnställd som bevilja: " + manager.getName() +
+
                 "\nNy ränta: " + interestRate +
-                "\nDatum för ändring: " + startDate;
+                "\nDatum för ändring: " + startDate+
+                        "\nBeviljat av: " + manager.getName();
     }
     
 
