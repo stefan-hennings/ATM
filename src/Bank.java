@@ -67,7 +67,7 @@ public class Bank implements Serializable {
                     "7. Spara alla ändringar");
             
             input = in.nextLine();
-            
+            // TODO: 02-Oct-20 use getString here?
             switch (input) {
                 case "1" -> createCustomer();
                 case "2" -> createEmployee();
