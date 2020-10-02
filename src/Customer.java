@@ -28,8 +28,14 @@ public class Customer extends Person implements Serializable {
     public void changeInterestRateOnLoan() {
         Loan loan = findLoan();
         double newInterestRate = Utility.getDouble("Mata in nya räntan: ");
-        loan.updateInterestRate(newInterestRate, Bank.employee);
+        loan.updateInterestRate(newInterestRate);
         Utility.println("\nRäntan är ändrad till " + newInterestRate + "% för lån " + loan.getLoanID() + "\n");
+    }
+    public void repayLoan() {
+        Loan loan = findLoan();
+        double newDebt = Utility.getDouble("Hur mycket ska betalas tillbaka? ");
+        loan.repay(newDebt);
+        loan.updateDept(loan.getDebt());
     }
     
     /**
@@ -80,14 +86,17 @@ public class Customer extends Person implements Serializable {
                     "\nAnsvarig på banken: " + currentLoan.getManager().getName() + "\n");
         }
     }
-    
-    public void repayLoan() {
+
+    public void printListOfRepayLoanHistory(){
         Loan loan = findLoan();
-        loan.repay(Utility.getDouble("Hur mycket ska betalas tillbaka? "));
+        System.out.print("Lån från start: " + loan.getStartDebt());
+        for (DeptHistory currentLoan : loan.getDeptHistory()) {
+            Utility.println(currentLoan.getListOfChanges());
+        }
     }
     
     public void createAccount() {
-        double depositAmount;
+        double depositAmount = 0;
         do {
             depositAmount = Utility.getDouble("Ange belopp att sätta in: ");
         } while (depositAmount < 0);
@@ -151,7 +160,11 @@ public class Customer extends Person implements Serializable {
         }
         return customerID.toString();
     }
-    
+
+    public void addAccount(double accountBalance, Employee employee) {
+        accountList.add(new Account(accountBalance, accountList.size() + 1, employee));
+    }
+
     public Loan getLatestLoan() {
         return loanList.get(loanList.size() - 1);
     }
