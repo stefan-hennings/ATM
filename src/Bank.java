@@ -1,9 +1,10 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Bank {
+public class Bank implements Serializable {
     static Scanner in = new Scanner(System.in);
     static Employee employee;
     

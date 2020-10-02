@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Loan {
+public class Loan implements Serializable {
     private final int loanID;
     private double debt;
     private final List<InterestHistory> loanHistory = new ArrayList<>();

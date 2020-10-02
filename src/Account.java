@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Account {
+public class Account implements Serializable {
     private final int accountNumber;
     private double accountBalance;
     private final List<InterestHistory> accountHistory = new ArrayList<>();

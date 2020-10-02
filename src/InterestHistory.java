@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.time.*;
 
-public class InterestHistory {
+public class InterestHistory implements Serializable {
     private final Employee manager;
     private final double interestRate;
     private final LocalDate startDate;
