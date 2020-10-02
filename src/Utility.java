@@ -12,6 +12,25 @@ public class Utility {
             }
         }
     }
+
+
+    public static Customer customerSearchForTheirUserAccount() {
+        if (Bank.customerList.isEmpty()) {
+            println("Just nu kommer vi inte åt vår server. Var god försök igen.");
+            Bank.createCustomer();
+        }
+        while (true) {
+            try {
+                return getCustomer(getString("Ange ditt personnummer: "));
+            } catch (CustomerNotFoundException e) {
+                println(e.getMessage());
+                if(getString("Vill du försöka igen? (j/n)  ").equalsIgnoreCase("n")){
+                    System.out.println("Välkommen åter!");
+                    System.exit(0);
+                }
+            }
+        }
+    }
     
     public static Customer getCustomer(String personalNumber) {
         for (Customer customer : Bank.customerList) {
