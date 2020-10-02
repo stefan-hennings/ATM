@@ -160,10 +160,6 @@ public class Customer extends Person implements Serializable {
         loanList.add(new Loan(loanAmount, employee, interestRate, loanList.size() + 1));
     }
     
-    public List<Loan> getLoanList() {
-        return loanList;
-    }
-    
     public String getCustomerId() {
         return customerId;
     }
