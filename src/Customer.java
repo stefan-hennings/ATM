@@ -87,7 +87,7 @@ public class Customer extends Person implements Serializable {
     }
     
     public void createAccount() {
-        double depositAmount = 0;
+        double depositAmount;
         do {
             depositAmount = Utility.getDouble("Ange belopp att sätta in: ");
         } while (depositAmount < 0);

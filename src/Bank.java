@@ -7,7 +7,6 @@ import java.util.Scanner;
 public class Bank implements Serializable {
     static List<Customer> customerList = new ArrayList<>();
     static List<Employee> employeeList = new LinkedList<>();
-//    private static final List<Employee> employeeList = new LinkedList<>();
     static Employee employee;
     static Scanner in = new Scanner(System.in);
     
