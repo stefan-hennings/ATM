@@ -9,15 +9,14 @@ import java.time.LocalDate;
  * Copyright: MIT
  */
 public class DeptHistory implements Serializable {
-
     private final Employee manager;
-    private double newDept;
+    private double debt;
     private final LocalDate startDate;
     private String listOfChanges;
 
-    public DeptHistory(double newDept, Employee manager) {
-        this.newDept = newDept;
+    public DeptHistory(double debt, Employee manager) {
         this.manager = manager;
+        this.debt = debt;
         this.startDate = LocalDate.now();
         this.listOfChanges = setListOfChanges();
     }
@@ -26,6 +25,8 @@ public class DeptHistory implements Serializable {
         return manager;
     }
 
+    public double getDebt(){ return debt;}
+
     public String getListOfChanges() {
         return listOfChanges;
     }
@@ -33,7 +34,7 @@ public class DeptHistory implements Serializable {
     public String setListOfChanges() {
         return listOfChanges =
                 "\nAnställd som bevilja: " + manager.getName() +
-                        "\nNytt belopp efter inbeltalning: " + newDept +
+                        "\nNytt belopp efter inbeltalning: " +  debt +
                         "\nDatum för ändring: " + startDate;
     }
 }

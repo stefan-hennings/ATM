@@ -5,11 +5,12 @@ import java.util.List;
 public class Loan implements Serializable {
     private final int loanID;
     private double debt;
-    private double oldDebt;
+    private double startDebt;
     private final List<InterestHistory> loanHistory = new ArrayList<>();
     private final List<DeptHistory> deptHistory = new ArrayList<>();
 
     public Loan(double debt, Employee manager, double interestRate, int loanID) {
+        this.startDebt = debt;
         this.debt = debt;
         this.loanID = loanID;
         loanHistory.add(new InterestHistory(manager, interestRate));
@@ -20,25 +21,23 @@ public class Loan implements Serializable {
     }
     
     public void repay(double amountPaid) {
-        this.oldDebt = debt;
-        debt -= amountPaid;
+        this.debt = debt - amountPaid;
     }
 
-    public double getOldDebt() {
-        return oldDebt;
+    public double getStartDebt() {
+        return startDebt;
     }
 
     public double getDebt() {
         return debt;
     }
 
-    public void updateInterestRate(double interestRate, Employee manager) {
-        loanHistory.add(new InterestHistory(manager, interestRate));
+    public void updateInterestRate(double interestRate) {
+        loanHistory.add(new InterestHistory(Bank.employee, interestRate));
     }
 
-    public void updateDept(double dept, Employee employee){
+    public void updateDept(double dept){
         deptHistory.add(new DeptHistory(dept, Bank.employee));
-
     }
     
     public double getInterestRate() {

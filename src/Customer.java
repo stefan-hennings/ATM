@@ -28,8 +28,14 @@ public class Customer extends Person implements Serializable {
     public void changeInterestRateOnLoan() {
         Loan loan = findLoan();
         double newInterestRate = Utility.getDouble("Mata in nya räntan: ");
-        loan.updateInterestRate(newInterestRate, Bank.employee);
+        loan.updateInterestRate(newInterestRate);
         Utility.println("\nRäntan är ändrad till " + newInterestRate + "% för lån " + loan.getLoanID() + "\n");
+    }
+    public void repayLoan() {
+        Loan loan = findLoan();
+        double newDebt = Utility.getDouble("Hur mycket ska betalas tillbaka? ");
+        loan.repay(newDebt);
+        loan.updateDept(loan.getDebt());
     }
     
     /**
@@ -83,17 +89,10 @@ public class Customer extends Person implements Serializable {
 
     public void printListOfRepayLoanHistory(){
         Loan loan = findLoan();
-        System.out.print("\nLåneskuld från start: " + loan.getOldDebt());
+        System.out.print("Lån från start: " + loan.getStartDebt());
         for (DeptHistory currentLoan : loan.getDeptHistory()) {
             Utility.println(currentLoan.getListOfChanges());
         }
-    }
-
-    public void repayLoan() {
-        Loan loan = findLoan();
-        double newDept = Utility.getDouble("Hur mycket ska betalas tillbaka? ");
-        loan.repay(newDept);
-        loan.updateDept(newDept, Bank.employee);
     }
     
     public void createAccount() {
@@ -139,11 +138,7 @@ public class Customer extends Person implements Serializable {
             Utility.println("" + account);
         }
     }
-    
-    public void addAccount(double accountBalance, Employee employee) {
-        accountList.add(new Account(accountBalance, accountList.size() + 1, employee));
-    }
-    
+
     /**
      * Generate random numbers and put them in to a String
      *
@@ -157,7 +152,11 @@ public class Customer extends Person implements Serializable {
         }
         return customerID.toString();
     }
-    
+
+    public void addAccount(double accountBalance, Employee employee) {
+        accountList.add(new Account(accountBalance, accountList.size() + 1, employee));
+    }
+
     public Loan getLatestLoan() {
         return loanList.get(loanList.size() - 1);
     }
