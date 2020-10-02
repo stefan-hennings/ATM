@@ -1,16 +1,14 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Bank implements Serializable {
     static List<Customer> customerList = new ArrayList<>();
     static List<Employee> employeeList = new LinkedList<>();
-//    private static final List<Employee> employeeList = new LinkedList<>();
+    static List<Employee> formerEmployeeList = new LinkedList<>();
+    //    private static final List<Employee> employeeList = new LinkedList<>();
     static Employee employee;
     static Scanner in = new Scanner(System.in);
-    
+
     public static void serialize() {
         try {
             FileOutputStream fileOut = new FileOutputStream("employees.ser");
@@ -19,6 +17,16 @@ public class Bank implements Serializable {
             out.close();
             fileOut.close();
             System.out.println("Serialized data is saved in employee.ser");
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+        try {
+            FileOutputStream fileOut = new FileOutputStream("formerEmployees.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(formerEmployeeList);
+            out.close();
+            fileOut.close();
+            System.out.println("Serialized data is saved in formerEmployee.ser");
         } catch (IOException i) {
             i.printStackTrace();
         }
@@ -33,7 +41,7 @@ public class Bank implements Serializable {
             i.printStackTrace();
         }
     }
-    
+
     public static void deSerialize() {
         try {
             FileInputStream fileIn = new FileInputStream("employees.ser");
@@ -45,6 +53,15 @@ public class Bank implements Serializable {
             System.out.println("Employee list not found");
         }
         try {
+            FileInputStream fileIn = new FileInputStream("formerEmployees.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            formerEmployeeList = (List<Employee>) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (Exception e) {
+            System.out.println("Former Employee list not found");
+        }
+        try {
             FileInputStream fileIn = new FileInputStream("customers.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             customerList = (List<Customer>) in.readObject();
@@ -54,7 +71,7 @@ public class Bank implements Serializable {
             System.out.println("Customer list not found");
         }
     }
-    
+
     public static void welcomeMenu() {
         String input;
         if (employeeList.isEmpty()) {
@@ -63,23 +80,23 @@ public class Bank implements Serializable {
         }
         employee = Utility.findEmployee();
         Utility.println("Välkommen " + employee.getName() + "!");
-        
+
         boolean running = true;
         while (running) {
             Utility.println("\nVälj vad du vill göra:\n" +
                     "1. Lägg till ny kund\n" +
-                    "2. Anställ någon\n" +
+                    "2. Personal\n" +
                     "3. Konto\n" +
                     "4. Lån\n" +
                     "5. Byt inloggning\n" +
                     "6. Avsluta\n" +
                     "7. Spara alla ändringar");
-            
+
             input = in.nextLine();
-            
+
             switch (input) {
                 case "1" -> createCustomer();
-                case "2" -> createEmployee();
+                case "2" -> personalMenu();
                 case "3" -> accountMenu();
                 case "4" -> loanMenu();
                 case "5" -> {
@@ -93,7 +110,63 @@ public class Bank implements Serializable {
             }
         }
     }
-    
+
+    public static void personalMenu() {
+        String input;
+
+        while (true) {
+            Utility.println("\nVälj vad du vill göra:\n" +
+                    "1. Lägg till en anställd\n" +
+                    "2. Skriv ut lista på anställda\n" +
+                    "3. Ta bort en anställd\n" +
+                    "4. Skriv ut lista på föredetta anställda" +
+                    "5. Återgå till huvudmenyn");
+
+            input = in.nextLine();
+
+            switch (input) {
+                case "1" -> createEmployee();
+                case "2" -> printListOfEmployee();
+                case "3" -> deleteEmployee();
+                case "4" -> printListOfFormerEmployee();
+                case "5" -> {
+                    return;
+                }
+                default -> Utility.println("Ange ett giltigt val! (1-5)");
+            }
+        }
+    }
+
+    public static void printListOfEmployee() {
+        //TODO Sortera listan efter namn
+        /*Collections.sort(employeeList, new Comparator() {
+
+        });
+        for (var e : employeeList) {
+            Utility.println("Namn: " + e.getName() + " Personnr: " + e.getPersonalId() + " Lön: " + e.getSalary() + "kr");
+        }*/
+    }
+
+    public static void deleteEmployee() {
+        employee = Utility.findEmployee();
+        formerEmployeeList.add(employee);
+        employeeList.remove(employee);
+    }
+
+    public static void printListOfFormerEmployee() {
+        //TODO Sortera listan efter namn
+   /* Collections.sort(employeeList, new Comparator<Employee>() {
+        @Override
+        public int compare(Employee o1, Employee o2) {
+            return 0;
+        }
+
+    });*/
+        for (var e : formerEmployeeList) {
+            Utility.println("Namn: " + e.getName() + " Personnr: " + e.getPersonalId() + " Lön: " + e.getSalary() + "kr");
+        }
+    }
+
     public static void createCustomer() {
         while (true) {
             String name = Utility.getString("Mata in kundens namn: ");
@@ -107,19 +180,19 @@ public class Bank implements Serializable {
                 break;
             }
         }
-        
+
     }
-    
+
     public static void createEmployee() {
         String name = Utility.getString("Mata in den anställdas namn: ");
         String personalNumber = Utility.getString("Mata in den anställdas personnummer: ");
         double salary = Utility.getDouble("Mata in den anställdas lön: ");
-        
+
         employeeList.add(new Employee(name, personalNumber, salary));
         Utility.println("Ny anställd skapad");
-        
+
     }
-    
+
     private static void accountMenu() {
         String input;
         Customer customer = Utility.findCustomer();
@@ -135,7 +208,7 @@ public class Bank implements Serializable {
                     "7. Ändra kund\n" +
                     "8. Återgå till huvudmenyn");
             input = in.nextLine();
-            
+
             switch (input) {
                 case "1" -> customer.createAccount();
                 case "2" -> customer.accountDeposit();
@@ -154,7 +227,7 @@ public class Bank implements Serializable {
             }
         }
     }
-    
+
     public static void loanMenu() {
         Customer customer = Utility.findCustomer();
         Utility.println(customer.getName() + " har valts. ");
@@ -168,9 +241,9 @@ public class Bank implements Serializable {
                     "5. Betala tillbaka lån\n" +
                     "6. Byt kund\n" +
                     "7. Gå till huvudmenyn");
-            
+
             input = in.nextLine();
-            
+
             switch (input) {
                 case "1" -> customer.applyForLoan();
                 case "2" -> customer.changeInterestRateOnLoan();
@@ -188,8 +261,8 @@ public class Bank implements Serializable {
             }
         }
     }
-    
-    
+
+
     public static boolean exitMenu() {
         String input = Utility.getString("Är du säker på att du vill avsluta? (j/n) ");
         if (input.equalsIgnoreCase("j")) {
@@ -200,7 +273,7 @@ public class Bank implements Serializable {
             return true;
         }
     }
-    
-    
+
+
 }
 
