@@ -9,29 +9,25 @@ import java.time.LocalDate;
  * Copyright: MIT
  */
 public class DebtHistory implements Serializable {
-    private final Employee manager;
-    private double debt;
+    private final double amountPaid;
+    private final double debtRemaining;
     private final LocalDate startDate;
-    private String listOfChanges;
     
-    public DebtHistory(double debt, Employee manager) {
-        this.manager = manager;
-        this.debt = debt;
+    public DebtHistory(double debtRemaining, double amountPaid) {
+        this.debtRemaining = debtRemaining;
+        this.amountPaid = amountPaid;
         this.startDate = LocalDate.now();
-        setListOfChanges();
     }
     
-    public double getDebt() {
-        return debt;
+    public double getDebtRemaining() {
+        return debtRemaining;
     }
     
-    public String getListOfChanges() {
-        return listOfChanges;
+    public void printChanges() {
+        Utility.println(
+                "Inbetalningsdag: " + startDate +
+                "\nInbetalat: " + amountPaid +
+                "\nKvarstående skuld: " + debtRemaining);
     }
     
-    public void setListOfChanges() {
-        listOfChanges = "Skuld efter inbetalning: " + debt +
-                "\nDatum för ändring: " + startDate +
-                "\nBeviljat av: " + manager.getName();
-    }
 }

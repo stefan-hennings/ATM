@@ -22,6 +22,7 @@ public class Loan implements Serializable {
     
     public void repay(double amountPaid) {
         this.debt = debt - amountPaid;
+        debtHistory.add(new DebtHistory(debt, amountPaid));
         Bank.serialize();
     }
 
@@ -36,10 +37,6 @@ public class Loan implements Serializable {
     public void updateInterestRate(double interestRate) {
         loanHistory.add(new InterestHistory(Bank.employee, interestRate));
         Bank.serialize();
-    }
-
-    public void updateDept(double dept){
-        debtHistory.add(new DebtHistory(dept, Bank.employee));
     }
     
     public double getInterestRate() {
