@@ -147,7 +147,7 @@ public class Bank implements Serializable {
     }
 
     public static void deleteEmployee() {
-        employee = Utility.findEmployee();
+        Employee employee = Utility.findEmployee();
         formerEmployeeList.add(employee);
         employeeList.remove(employee);
     }
