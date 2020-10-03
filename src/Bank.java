@@ -140,16 +140,17 @@ public class Bank implements Serializable {
         //TODO Sortera listan efter namn
         /*Collections.sort(employeeList, new Comparator() {
 
-        });
+        });*/
         for (var e : employeeList) {
             Utility.println("Namn: " + e.getName() + " Personnr: " + e.getPersonalId() + " Lön: " + e.getSalary() + "kr");
-        }*/
+        }
     }
 
     public static void deleteEmployee() {
         Employee employee = Utility.findEmployee();
         formerEmployeeList.add(employee);
         employeeList.remove(employee);
+        serialize();
     }
 
     public static void printListOfFormerEmployee() {
