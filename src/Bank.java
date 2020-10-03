@@ -118,7 +118,7 @@ public class Bank implements Serializable {
                     "1. Lägg till en anställd\n" +
                     "2. Skriv ut lista på anställda\n" +
                     "3. Ta bort en anställd\n" +
-                    "4. Skriv ut lista på föredetta anställda" +
+                    "4. Skriv ut lista på föredetta anställda\n" +
                     "5. Återgå till huvudmenyn");
 
             input = in.nextLine();
