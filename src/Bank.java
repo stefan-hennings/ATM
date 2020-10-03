@@ -5,7 +5,6 @@ public class Bank implements Serializable {
     static List<Customer> customerList = new ArrayList<>();
     static List<Employee> employeeList = new LinkedList<>();
     static List<Employee> formerEmployeeList = new LinkedList<>();
-    //    private static final List<Employee> employeeList = new LinkedList<>();
     static Employee employee;
     static Scanner in = new Scanner(System.in);
 
@@ -96,7 +95,7 @@ public class Bank implements Serializable {
 
             switch (input) {
                 case "1" -> createCustomer();
-                case "2" -> personalMenu();
+                case "2" -> employeeMenu();
                 case "3" -> accountMenu();
                 case "4" -> loanMenu();
                 case "5" -> {
@@ -111,7 +110,7 @@ public class Bank implements Serializable {
         }
     }
 
-    public static void personalMenu() {
+    public static void employeeMenu() {
         String input;
 
         while (true) {
