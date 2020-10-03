@@ -1,12 +1,10 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Bank implements Serializable {
     static List<Customer> customerList = new ArrayList<>();
     static List<Employee> employeeList = new LinkedList<>();
+    static List<Employee> formerEmployeeList = new LinkedList<>();
     static Employee employee;
     static Scanner in = new Scanner(System.in);
     
@@ -15,6 +13,16 @@ public class Bank implements Serializable {
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("employees.ser"));
             out.writeObject(employeeList);
             out.close();
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+        try {
+            FileOutputStream fileOut = new FileOutputStream("formerEmployees.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(formerEmployeeList);
+            out.close();
+            fileOut.close();
+            System.out.println("Serialized data is saved in formerEmployee.ser");
         } catch (IOException i) {
             i.printStackTrace();
         }
@@ -35,6 +43,15 @@ public class Bank implements Serializable {
             in.close();
         } catch (Exception e) {
             System.out.println("Employee list not found");
+        }
+        try {
+            FileInputStream fileIn = new FileInputStream("formerEmployees.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            formerEmployeeList = (List<Employee>) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (Exception e) {
+            System.out.println("Former Employee list not found");
         }
         try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream("customers.ser"));
@@ -58,7 +75,7 @@ public class Bank implements Serializable {
         while (running) {
             Utility.println("\n\nVälj vad du vill göra:\n\n" +
                     "1. Lägg till ny kund\n" +
-                    "2. Anställ någon\n" +
+                    "2. Personal\n" +
                     "3. Konto\n" +
                     "4. Lån\n" +
                     "5. Byt inloggning\n" +
@@ -69,7 +86,7 @@ public class Bank implements Serializable {
             // TODO: 02-Oct-20 use getString here?
             switch (input) {
                 case "1" -> createCustomer();
-                case "2" -> createEmployee();
+                case "2" -> employeeMenu();
                 case "3" -> accountMenu();
                 case "4" -> loanMenu();
                 case "5" -> {
@@ -83,7 +100,64 @@ public class Bank implements Serializable {
             }
         }
     }
-    
+
+    public static void employeeMenu() {
+        String input;
+
+        while (true) {
+            Utility.println("\nVälj vad du vill göra:\n" +
+                    "1. Lägg till en anställd\n" +
+                    "2. Skriv ut lista på anställda\n" +
+                    "3. Ta bort en anställd\n" +
+                    "4. Skriv ut lista på föredetta anställda\n" +
+                    "5. Återgå till huvudmenyn");
+
+            input = in.nextLine();
+
+            switch (input) {
+                case "1" -> createEmployee();
+                case "2" -> printListOfEmployee();
+                case "3" -> deleteEmployee();
+                case "4" -> printListOfFormerEmployee();
+                case "5" -> {
+                    return;
+                }
+                default -> Utility.println("Ange ett giltigt val! (1-5)");
+            }
+        }
+    }
+
+    public static void printListOfEmployee() {
+        //TODO Sortera listan efter namn
+        /*Collections.sort(employeeList, new Comparator() {
+
+        });*/
+        for (var e : employeeList) {
+            Utility.println("Namn: " + e.getName() + " Personnr: " + e.getPersonalId() + " Lön: " + e.getSalary() + "kr");
+        }
+    }
+
+    public static void deleteEmployee() {
+        Employee employee = Utility.findEmployee();
+        formerEmployeeList.add(employee);
+        employeeList.remove(employee);
+        serialize();
+    }
+
+    public static void printListOfFormerEmployee() {
+        //TODO Sortera listan efter namn
+   /* Collections.sort(employeeList, new Comparator<Employee>() {
+        @Override
+        public int compare(Employee o1, Employee o2) {
+            return 0;
+        }
+
+    });*/
+        for (var e : formerEmployeeList) {
+            Utility.println("Namn: " + e.getName() + " Personnr: " + e.getPersonalId() + " Lön: " + e.getSalary() + "kr");
+        }
+    }
+
     public static void createCustomer() {
         while (true) {
             String name = Utility.getString("Mata in kundens namn: ");
@@ -105,19 +179,20 @@ public class Bank implements Serializable {
                 }
             }
         }
+        
     }
-    
+
     public static void createEmployee() {
         String name = Utility.getString("Mata in den anställdas namn: ");
         String personalNumber = Utility.getString("Mata in den anställdas personnummer: ");
         double salary = Utility.getDouble("Mata in den anställdas lön: ");
-        
+
         employeeList.add(new Employee(name, personalNumber, salary));
         serialize();
         Utility.println("Ny anställd skapad");
-        
+
     }
-    
+
     private static void accountMenu() {
         String input;
         Customer customer = Utility.findCustomer();
@@ -133,7 +208,7 @@ public class Bank implements Serializable {
                     "7. Byt kund\n" +
                     "8. Återgå till huvudmenyn");
             input = in.nextLine();
-            
+
             switch (input) {
                 case "1" -> customer.createAccount();
                 case "2" -> customer.accountDeposit();
@@ -152,7 +227,7 @@ public class Bank implements Serializable {
             }
         }
     }
-    
+
     public static void loanMenu() {
         Customer customer = Utility.findCustomer();
         Utility.println(customer.getName() + " har valts. ");
@@ -169,7 +244,7 @@ public class Bank implements Serializable {
                     "8. Gå till huvudmenyn");
             
             input = in.nextLine();
-            
+
             switch (input) {
                 case "1" -> customer.applyForLoan();
                 case "2" -> customer.changeInterestRateOnLoan();
