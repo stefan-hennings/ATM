@@ -35,7 +35,7 @@ public class Loan implements Serializable {
     }
 
     public void updateInterestRate(double interestRate) {
-        loanHistory.add(new InterestHistory(Bank.employee, interestRate));
+        loanHistory.add(new InterestHistory(Bank.activeEmployee, interestRate));
         Bank.serialize();
     }
     

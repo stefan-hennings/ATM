@@ -5,7 +5,7 @@ public class Bank implements Serializable {
     static List<Customer> customerList = new ArrayList<>();
     static List<Employee> employeeList = new LinkedList<>();
     static List<Employee> formerEmployeeList = new LinkedList<>();
-    static Employee employee;
+    static Employee activeEmployee;
     static Scanner in = new Scanner(System.in);
     
     public static void serialize() {
@@ -13,8 +13,8 @@ public class Bank implements Serializable {
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("employees.ser"));
             out.writeObject(employeeList);
             out.close();
-        } catch (IOException i) {
-            i.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         try {
             FileOutputStream fileOut = new FileOutputStream("formerEmployees.ser");
@@ -22,20 +22,20 @@ public class Bank implements Serializable {
             out.writeObject(formerEmployeeList);
             out.close();
             fileOut.close();
-            System.out.println("Serialized data is saved in formerEmployee.ser");
-        } catch (IOException i) {
-            i.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         try {
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("customers.ser"));
             out.writeObject(customerList);
             out.close();
             System.out.println("Files updated");
-        } catch (IOException i) {
-            i.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
     
+    @SuppressWarnings("unchecked")
     public static void deSerialize() {
         try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream("employees.ser"));
@@ -68,8 +68,8 @@ public class Bank implements Serializable {
             Utility.println("Det finns inga anställda! Anställ någon NU! ");
             createEmployee();
         }
-        employee = Utility.findEmployee();
-        Utility.println("Välkommen " + employee.getName() + "!");
+        activeEmployee = Utility.findEmployee();
+        Utility.println("Välkommen " + activeEmployee.getName() + "!");
         
         boolean running = true;
         while (running) {
@@ -90,8 +90,8 @@ public class Bank implements Serializable {
                 case "3" -> accountMenu();
                 case "4" -> loanMenu();
                 case "5" -> {
-                    employee = Utility.findEmployee();
-                    Utility.println("Välkommen " + employee.getName() + "!");
+                    activeEmployee = Utility.findEmployee();
+                    Utility.println("Välkommen " + activeEmployee.getName() + "!");
                 }
                 case "6" -> running = exitMenu();
                 // TODO: 02-Oct-20 Automate file updates
@@ -109,7 +109,7 @@ public class Bank implements Serializable {
                     "1. Lägg till en anställd\n" +
                     "2. Skriv ut lista på anställda\n" +
                     "3. Ta bort en anställd\n" +
-                    "4. Skriv ut lista på föredetta anställda\n" +
+                    "4. Skriv ut lista på före detta anställda\n" +
                     "5. Återgå till huvudmenyn");
 
             input = in.nextLine();

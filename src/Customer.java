@@ -41,13 +41,13 @@ public class Customer extends Person implements Serializable {
         double loanAmount = Utility.getDouble("Ange lånets storlek: ");
         double interest = Utility.getDouble("Ange lånets räntesats: ");
         
-        grantLoan(loanAmount, Bank.employee, interest);
+        grantLoan(loanAmount, Bank.activeEmployee, interest);
         Utility.println("Lån på " + getLatestLoan().getDebt() + " skapat åt " + getName());
     }
     
     public void changeAccountInterestRate() {
         Account account = findAccount();
-        account.changeInterestRate(Bank.employee, Utility.getDouble("Ange den nya räntan: "));
+        account.changeInterestRate(Bank.activeEmployee, Utility.getDouble("Ange den nya räntan: "));
     }
     
     /**
@@ -65,7 +65,7 @@ public class Customer extends Person implements Serializable {
         do {
             depositAmount = Utility.getDouble("Ange belopp att sätta in: ");
         } while (depositAmount < 0);
-        addAccount(depositAmount, Bank.employee);
+        addAccount(depositAmount, Bank.activeEmployee);
         Utility.println("Nytt konto skapat med " + accountList.get(accountList.size() - 1).getAccountBalance());
     }
     
